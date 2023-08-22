@@ -1,13 +1,15 @@
 import { Game } from "src/game/models/game.entity";
 import { Tournament } from "src/tournament/models/tournament.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity()
 export class User{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @Column()
+    @Column({
+        unique:true
+    })
     email:string;
 
     @Column()
@@ -19,8 +21,10 @@ export class User{
     @Column()
     lastName:string;
 
-    @Column()
-    age:number;
+    @Column({
+        nullable:true
+    })
+    dateOfBirth:Date;
 
     @Column({
         default:"FIDE"
@@ -51,8 +55,6 @@ export class User{
     })
     accountVerified:boolean;
 
-    @Column()
-    verificationCode:string;
 
     @ManyToMany(()=>Tournament,(tournament)=>tournament.players)
     @JoinTable()

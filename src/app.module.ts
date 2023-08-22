@@ -7,10 +7,14 @@ import { PositionModule } from './position/position.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from 'typeorm.config';
 import { PositionToGameModule } from './position-to-game/position-to-game.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     AuthModule,
     UserModule,
     GameModule,
