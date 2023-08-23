@@ -13,6 +13,7 @@ const auth_service_1 = require("./auth.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/models/user.entity");
 const jwt_1 = require("@nestjs/jwt");
+const strategy_1 = require("./strategy");
 let AuthModule = exports.AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule = __decorate([
@@ -20,7 +21,7 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
             jwt_1.JwtModule.register({})],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService],
+        providers: [auth_service_1.AuthService, strategy_1.JwtStrategy],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map
