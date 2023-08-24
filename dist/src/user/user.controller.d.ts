@@ -1,5 +1,4 @@
-/// <reference types="passport" />
-import { Request } from 'express';
+import { User } from './models/user.entity';
 export declare class UserController {
-    getMe(req: Request): Express.User;
+    getMe(user: User): User;
 }

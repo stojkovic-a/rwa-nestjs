@@ -55,6 +55,11 @@ export class User{
     })
     accountVerified:boolean;
 
+    @Column()
+    verificationCode:string;
+
+    @Column()
+    registrationDateTime:Date;
 
     @ManyToMany(()=>Tournament,(tournament)=>tournament.players)
     @JoinTable()

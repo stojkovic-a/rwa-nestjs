@@ -15,18 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_guard_1 = require("../auth/guard/jwt.guard");
+const index_1 = require("../auth/decorator/index");
+const user_entity_1 = require("./models/user.entity");
 let UserController = exports.UserController = class UserController {
-    getMe(req) {
-        console.log("req.user", req.user);
-        return req.user;
+    getMe(user) {
+        return user;
     }
 };
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
     (0, common_1.Get)('me'),
-    __param(0, (0, common_1.Req)()),
+    __param(0, (0, index_1.GetUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [user_entity_1.User]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getMe", null);
 exports.UserController = UserController = __decorate([

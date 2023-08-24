@@ -21,6 +21,7 @@ const typeorm_2 = require("typeorm");
 const common_2 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
+const code_generation_1 = require("./code-generation");
 let AuthService = exports.AuthService = class AuthService {
     constructor(userRepo, jwtService, config) {
         this.userRepo = userRepo;
@@ -31,6 +32,8 @@ let AuthService = exports.AuthService = class AuthService {
         const user = await this.userRepo.findOneBy({ email: dto.email });
         if (!user)
             throw new common_2.ForbiddenException('Credentials incorrect');
+        if (!user.accountVerified)
+            throw new common_2.ForbiddenException('Verify the account first');
         const pwMatches = await argon.verify(user.passwordHash, dto.password);
         if (!pwMatches)
             throw new common_2.ForbiddenException('Credentials incorrect');
@@ -45,6 +48,7 @@ let AuthService = exports.AuthService = class AuthService {
     }
     async signup(dto) {
         const hash = await argon.hash(dto.password);
+        const verificatioCode = (0, code_generation_1.generateSecureRandomString)(128);
         try {
             const user = this.userRepo.create({
                 email: dto.email,
@@ -59,6 +63,8 @@ let AuthService = exports.AuthService = class AuthService {
                 isPlayer: dto.isPlayer,
                 accountVerified: false,
                 isAdmin: false,
+                verificationCode: verificatioCode,
+                registrationDateTime: Date.now()
             });
             let userRole = '';
             if (user.isAdmin) {
@@ -67,7 +73,7 @@ let AuthService = exports.AuthService = class AuthService {
             else {
                 userRole = 'user';
             }
-            return this.signToken(user.id, user.email, userRole);
+            return (0, common_1.HttpCode)(200);
         }
         catch (e) {
             throw new Error(e);

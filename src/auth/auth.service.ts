@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpCode, Injectable } from "@nestjs/common";
 import { UserService } from "src/user/user.service";
 import { SignupDto } from "./models/signupDto";
 import * as argon from 'argon2';
@@ -9,6 +9,7 @@ import { SigninDto } from "./models/signinDto";
 import { ForbiddenException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from "@nestjs/config";
+import { generateSecureRandomString } from "./code-generation";
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,9 @@ export class AuthService {
         if (!user)
             throw new ForbiddenException('Credentials incorrect');
 
+        if (!user.accountVerified)
+            throw new ForbiddenException('Verify the account first');
+
         const pwMatches = await argon.verify(user.passwordHash, dto.password);
         if (!pwMatches)
             throw new ForbiddenException('Credentials incorrect');
@@ -40,6 +44,7 @@ export class AuthService {
 
     async signup(dto: SignupDto) {
         const hash = await argon.hash(dto.password);
+        const verificatioCode = generateSecureRandomString(128);
         try {
             const user = this.userRepo.create({
                 email: dto.email,
@@ -54,6 +59,8 @@ export class AuthService {
                 isPlayer: dto.isPlayer,
                 accountVerified: false,
                 isAdmin: false,
+                verificationCode: verificatioCode,
+                registrationDateTime: Date.now()
             })
 
             let userRole = '';
@@ -62,7 +69,7 @@ export class AuthService {
             } else {
                 userRole = 'user';
             }
-            return this.signToken(user.id, user.email, userRole);
+            return HttpCode(200);
 
         }
         catch (e) {

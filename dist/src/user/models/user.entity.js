@@ -80,6 +80,14 @@ __decorate([
     __metadata("design:type", Boolean)
 ], User.prototype, "accountVerified", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], User.prototype, "verificationCode", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Date)
+], User.prototype, "registrationDateTime", void 0);
+__decorate([
     (0, typeorm_1.ManyToMany)(() => tournament_entity_1.Tournament, (tournament) => tournament.players),
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)

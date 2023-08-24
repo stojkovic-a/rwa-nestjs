@@ -14,6 +14,8 @@ export declare class User {
     isAdmin: boolean;
     isPlayer: boolean;
     accountVerified: boolean;
+    verificationCode: string;
+    registrationDateTime: Date;
     tournamentParticipations: Tournament[];
     whiteGames: Game[];
     blackGames: Game[];
