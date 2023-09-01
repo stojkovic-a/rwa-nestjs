@@ -9,4 +9,8 @@ export class UserService {
     constructor(@InjectRepository(User) private userRepo: Repository<User>) {
 
     }
+
+    public getAllUsers(){
+        return this.userRepo.find();
+    }
 }

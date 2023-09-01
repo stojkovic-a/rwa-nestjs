@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const enum_1 = require("../../auth/enum");
 const game_entity_1 = require("../../game/models/game.entity");
 const tournament_entity_1 = require("../../tournament/models/tournament.entity");
 const typeorm_1 = require("typeorm");
@@ -63,16 +64,13 @@ __decorate([
 ], User.prototype, "bltizElo", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        default: false
+        type: "enum",
+        enum: enum_1.Role,
+        default: [enum_1.Role.User],
+        array: true
     }),
-    __metadata("design:type", Boolean)
-], User.prototype, "isAdmin", void 0);
-__decorate([
-    (0, typeorm_1.Column)({
-        default: false
-    }),
-    __metadata("design:type", Boolean)
-], User.prototype, "isPlayer", void 0);
+    __metadata("design:type", Array)
+], User.prototype, "roles", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         default: false
@@ -87,6 +85,12 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Date)
 ], User.prototype, "registrationDateTime", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        nullable: true
+    }),
+    __metadata("design:type", String)
+], User.prototype, "refreshTokenHash", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => tournament_entity_1.Tournament, (tournament) => tournament.players),
     (0, typeorm_1.JoinTable)(),

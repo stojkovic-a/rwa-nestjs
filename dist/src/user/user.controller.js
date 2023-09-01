@@ -14,23 +14,41 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_guard_1 = require("../auth/guard/jwt.guard");
-const index_1 = require("../auth/decorator/index");
 const user_entity_1 = require("./models/user.entity");
+const user_service_1 = require("./user.service");
+const index_1 = require("../auth/guard/index");
+const index_2 = require("../auth/decorator/index");
+const index_3 = require("../auth/enum/index");
 let UserController = exports.UserController = class UserController {
+    constructor(userService) {
+        this.userService = userService;
+    }
     getMe(user) {
         return user;
     }
+    async getAllUsers() {
+        return this.userService.getAllUsers();
+    }
 };
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
     (0, common_1.Get)('me'),
-    __param(0, (0, index_1.GetUser)()),
+    (0, common_1.UseGuards)(index_1.JwtGuard),
+    __param(0, (0, index_2.GetUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getMe", null);
+__decorate([
+    (0, common_1.Get)(),
+    (0, index_2.Roles)(index_3.Role.Admin, index_3.Role.Player),
+    (0, common_1.UseGuards)(index_1.RolesGuard),
+    (0, common_1.UseGuards)(index_1.JwtGuard),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getAllUsers", null);
 exports.UserController = UserController = __decorate([
-    (0, common_1.Controller)('user')
+    (0, common_1.Controller)('user'),
+    __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map

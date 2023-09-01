@@ -1,11 +1,12 @@
 import { AuthService } from "./auth.service";
-import { SignupDto } from "./models/signupDto";
-import { SigninDto } from "./models/signinDto";
+import { SignupDto, SigninDto } from "./models";
+import { Tokens } from "./types";
+import { Request } from 'express';
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
-    signup(dto: SignupDto): Promise<MethodDecorator>;
-    signin(dto: SigninDto): Promise<{
-        access_token: string;
-    }>;
+    signupLocal(dto: SignupDto): Promise<Tokens>;
+    signinLocal(dto: SigninDto): Promise<Tokens>;
+    logout(req: Request): Promise<import("typeorm").UpdateResult>;
+    refreshTokens(): void;
 }

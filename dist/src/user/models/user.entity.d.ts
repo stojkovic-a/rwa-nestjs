@@ -1,3 +1,4 @@
+import { Role } from "src/auth/enum";
 import { Game } from "src/game/models/game.entity";
 import { Tournament } from "src/tournament/models/tournament.entity";
 export declare class User {
@@ -11,11 +12,11 @@ export declare class User {
     classicalELo: number;
     rapidElo: number;
     bltizElo: number;
-    isAdmin: boolean;
-    isPlayer: boolean;
+    roles: Role[];
     accountVerified: boolean;
     verificationCode: string;
     registrationDateTime: Date;
+    refreshTokenHash: string;
     tournamentParticipations: Tournament[];
     whiteGames: Game[];
     blackGames: Game[];

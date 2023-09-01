@@ -21,7 +21,12 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
             jwt_1.JwtModule.register({})],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, strategy_1.JwtStrategy],
+        providers: [
+            auth_service_1.AuthService,
+            strategy_1.JwtStrategy,
+            strategy_1.AtStrategy,
+            strategy_1.RtStrategy
+        ],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

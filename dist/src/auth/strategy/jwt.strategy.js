@@ -20,7 +20,7 @@ const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("../../user/models/user.entity");
-let JwtStrategy = exports.JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'jwt') {
+let JwtStrategy = exports.JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'jwt2') {
     constructor(config, userRepo) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -31,7 +31,6 @@ let JwtStrategy = exports.JwtStrategy = class JwtStrategy extends (0, passport_1
     async validate(payload) {
         const user = await this.userRepo.findOneBy({ id: payload.sub });
         delete user.passwordHash;
-        console.log(user);
         return user;
     }
 };

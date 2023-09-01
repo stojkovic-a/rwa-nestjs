@@ -1,3 +1,4 @@
+import { Role } from "src/auth/enum";
 import { Game } from "src/game/models/game.entity";
 import { Tournament } from "src/tournament/models/tournament.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
@@ -41,14 +42,12 @@ export class User{
     bltizElo:number;
 
     @Column({
-        default:false
+        type: "enum",
+        enum: Role,
+        default:[Role.User],
+        array:true
     })
-    isAdmin:boolean;
-
-    @Column({
-        default:false
-    })
-    isPlayer:boolean;
+    roles:Role[]
 
     @Column({
         default:false
@@ -60,6 +59,11 @@ export class User{
 
     @Column()
     registrationDateTime:Date;
+
+    @Column({
+        nullable:true
+    })
+    refreshTokenHash:string;
 
     @ManyToMany(()=>Tournament,(tournament)=>tournament.players)
     @JoinTable()

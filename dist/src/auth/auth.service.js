@@ -22,13 +22,70 @@ const common_2 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const code_generation_1 = require("./code-generation");
+const enum_1 = require("./enum");
 let AuthService = exports.AuthService = class AuthService {
     constructor(userRepo, jwtService, config) {
         this.userRepo = userRepo;
         this.jwtService = jwtService;
         this.config = config;
     }
-    async signin(dto) {
+    async hashData(data) {
+        return await argon.hash(data);
+    }
+    async getTokens(userId, email, roles) {
+        const payload = {
+            sub: userId,
+            email,
+            roles
+        };
+        const accesSecret = this.config.get('JWT_ACCESS_STRATEGY_SECRET');
+        const refreshSecret = this.config.get('JWT_REFRESH_STRATEGY_SECRET');
+        const [at, rt] = await Promise.all([
+            this.jwtService.signAsync(payload, {
+                expiresIn: '15m',
+                secret: accesSecret
+            }),
+            this.jwtService.signAsync(payload, {
+                expiresIn: 60 * 60 * 24 * 7,
+                secret: refreshSecret,
+            })
+        ]);
+        return {
+            access_token: at,
+            refresh_token: rt
+        };
+    }
+    async signupLocal(dto) {
+        const hash = await this.hashData(dto.password);
+        const verificatioCode = (0, code_generation_1.generateSecureRandomString)(128);
+        const roles = [enum_1.Role.User];
+        if (dto.isPlayer)
+            roles.push(enum_1.Role.Player);
+        const user = await this.userRepo.create({
+            email: dto.email,
+            passwordHash: hash,
+            firstName: dto.firstName,
+            lastName: dto.lastName,
+            dateOfBirth: dto.dateOfBirth,
+            representingCountry: dto.representingCountry,
+            classicalELo: dto.classicalElo,
+            rapidElo: dto.rapidElo,
+            bltizElo: dto.blitzElo,
+            accountVerified: false,
+            verificationCode: verificatioCode,
+            registrationDateTime: new Date(Date.now()),
+            roles: roles,
+        });
+        await this.userRepo.save(user);
+        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        await this.updateRtHash(user.id, tokens.refresh_token);
+        return tokens;
+    }
+    async updateRtHash(userId, rt) {
+        const hash = await this.hashData(rt);
+        await this.userRepo.update(userId, { refreshTokenHash: rt });
+    }
+    async signinLocal(dto) {
         const user = await this.userRepo.findOneBy({ email: dto.email });
         if (!user)
             throw new common_2.ForbiddenException('Credentials incorrect');
@@ -37,63 +94,19 @@ let AuthService = exports.AuthService = class AuthService {
         const pwMatches = await argon.verify(user.passwordHash, dto.password);
         if (!pwMatches)
             throw new common_2.ForbiddenException('Credentials incorrect');
-        let userRole = '';
-        if (user.isAdmin) {
-            userRole = 'admin';
-        }
-        else {
-            userRole = 'user';
-        }
-        return this.signToken(user.id, user.email, userRole);
+        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        await this.updateRtHash(user.id, tokens.refresh_token);
+        return tokens;
     }
-    async signup(dto) {
-        const hash = await argon.hash(dto.password);
-        const verificatioCode = (0, code_generation_1.generateSecureRandomString)(128);
-        try {
-            const user = this.userRepo.create({
-                email: dto.email,
-                passwordHash: hash,
-                firstName: dto.firstName,
-                lastName: dto.lastName,
-                dateOfBirth: dto.dateOfBirth,
-                representingCountry: dto.representingCountry,
-                classicalELo: dto.classicalElo,
-                rapidElo: dto.rapidElo,
-                bltizElo: dto.blitzElo,
-                isPlayer: dto.isPlayer,
-                accountVerified: false,
-                isAdmin: false,
-                verificationCode: verificatioCode,
-                registrationDateTime: Date.now()
-            });
-            let userRole = '';
-            if (user.isAdmin) {
-                userRole = 'admin';
-            }
-            else {
-                userRole = 'user';
-            }
-            return (0, common_1.HttpCode)(200);
-        }
-        catch (e) {
-            throw new Error(e);
-        }
+    async logout(userId) {
+        return this.userRepo.createQueryBuilder()
+            .update(user_entity_1.User)
+            .set({ refreshTokenHash: null })
+            .where('id = :id', { id: userId })
+            .andWhere('refreshTokenHash IS NOT NULL')
+            .execute();
     }
-    async signToken(userId, email, role) {
-        const payload = {
-            sub: userId,
-            email,
-            role,
-        };
-        const secret = this.config.get('JWT_SIGNIN_SECRET');
-        const token = await this.jwtService.signAsync(payload, {
-            expiresIn: '15m',
-            secret: secret,
-        });
-        return {
-            access_token: token
-        };
-    }
+    refreshTokens() { }
 };
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),

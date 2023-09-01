@@ -21,6 +21,9 @@ let UserService = exports.UserService = class UserService {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
+    getAllUsers() {
+        return this.userRepo.find();
+    }
 };
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),

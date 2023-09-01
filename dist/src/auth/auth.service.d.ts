@@ -1,19 +1,20 @@
-import { SignupDto } from "./models/signupDto";
+import { SignupDto, SigninDto } from "./models";
 import { User } from "src/user/models/user.entity";
 import { Repository } from "typeorm";
-import { SigninDto } from "./models/signinDto";
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from "@nestjs/config";
+import { Role } from "./enum";
+import { Tokens } from "./types";
 export declare class AuthService {
     private userRepo;
     private jwtService;
     private config;
     constructor(userRepo: Repository<User>, jwtService: JwtService, config: ConfigService);
-    signin(dto: SigninDto): Promise<{
-        access_token: string;
-    }>;
-    signup(dto: SignupDto): Promise<MethodDecorator>;
-    signToken(userId: number, email: string, role: string): Promise<{
-        access_token: string;
-    }>;
+    hashData(data: string): Promise<string>;
+    getTokens(userId: number, email: string, roles: Role[]): Promise<Tokens>;
+    signupLocal(dto: SignupDto): Promise<Tokens>;
+    updateRtHash(userId: number, rt: string): Promise<void>;
+    signinLocal(dto: SigninDto): Promise<Tokens>;
+    logout(userId: number): Promise<import("typeorm").UpdateResult>;
+    refreshTokens(): void;
 }
