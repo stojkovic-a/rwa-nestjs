@@ -106,7 +106,20 @@ let AuthService = exports.AuthService = class AuthService {
             .andWhere('refreshTokenHash IS NOT NULL')
             .execute();
     }
-    refreshTokens() { }
+    async refreshTokens(userId, rt) {
+        console.log(rt);
+        const user = await this.userRepo.findOneBy({ id: userId });
+        if (!user)
+            throw new common_2.ForbiddenException('Acces Denied');
+        console.log('dasdadasddas');
+        console.log(user.refreshTokenHash);
+        const rtMatches = await argon(user.refreshTokenHash, rt);
+        if (!rtMatches)
+            throw new common_2.ForbiddenException('Acces Denied');
+        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        await this.updateRtHash(user.id, tokens.refresh_token);
+        return tokens;
+    }
 };
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),

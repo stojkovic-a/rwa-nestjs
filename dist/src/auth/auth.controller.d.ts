@@ -8,5 +8,5 @@ export declare class AuthController {
     signupLocal(dto: SignupDto): Promise<Tokens>;
     signinLocal(dto: SigninDto): Promise<Tokens>;
     logout(req: Request): Promise<import("typeorm").UpdateResult>;
-    refreshTokens(): void;
+    refreshTokens(req: Request): Promise<Tokens>;
 }

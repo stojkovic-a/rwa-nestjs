@@ -31,7 +31,9 @@ let AuthController = exports.AuthController = class AuthController {
         const user = req.user;
         return await this.authService.logout(user['sub']);
     }
-    refreshTokens() {
+    refreshTokens(req) {
+        const user = req.user;
+        return this.authService.refreshTokens(user['sub'], user['refreshToken']);
     }
 };
 __decorate([
@@ -63,8 +65,9 @@ __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt-refresh')),
     (0, common_1.Post)('refresh'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "refreshTokens", null);
 exports.AuthController = AuthController = __decorate([

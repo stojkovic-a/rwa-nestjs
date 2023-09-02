@@ -186,9 +186,25 @@ export class AuthService {
             .where('id = :id', { id: userId })
             .andWhere('refreshTokenHash IS NOT NULL')
             .execute();
-        
+
     }
 
-    refreshTokens() { }
+    async refreshTokens(userId: number, rt: string) {
+        console.log(rt);
+        const user = await this.userRepo.findOneBy({ id: userId });
+        if (!user)
+            throw new ForbiddenException('Acces Denied');
+        console.log('dasdadasddas')
+        console.log(user.refreshTokenHash);
+
+        const rtMatches = await argon(user.refreshTokenHash, rt);
+        if (!rtMatches)
+            throw new ForbiddenException('Acces Denied');
+
+        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        await this.updateRtHash(user.id, tokens.refresh_token);
+
+        return tokens;
+    }
 
 }

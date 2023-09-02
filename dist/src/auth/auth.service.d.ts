@@ -16,5 +16,5 @@ export declare class AuthService {
     updateRtHash(userId: number, rt: string): Promise<void>;
     signinLocal(dto: SigninDto): Promise<Tokens>;
     logout(userId: number): Promise<import("typeorm").UpdateResult>;
-    refreshTokens(): void;
+    refreshTokens(userId: number, rt: string): Promise<Tokens>;
 }
