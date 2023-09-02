@@ -13,6 +13,8 @@ export declare class AuthService {
     hashData(data: string): Promise<string>;
     getTokens(userId: number, email: string, roles: Role[]): Promise<Tokens>;
     signupLocal(dto: SignupDto): Promise<Tokens>;
+    sendVerificationEmail(userMail: string, link: string): Promise<void>;
+    verifyEmail(code: string): Promise<void>;
     updateRtHash(userId: number, rt: string): Promise<void>;
     signinLocal(dto: SigninDto): Promise<Tokens>;
     logout(userId: number): Promise<import("typeorm").UpdateResult>;

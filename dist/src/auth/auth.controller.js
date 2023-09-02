@@ -25,6 +25,10 @@ let AuthController = exports.AuthController = class AuthController {
     signupLocal(dto) {
         return this.authService.signupLocal(dto);
     }
+    async verifyEmail(code) {
+        await this.verifyEmail(code);
+        return "Account succesfully verified!";
+    }
     signinLocal(dto) {
         return this.authService.signinLocal(dto);
     }
@@ -44,6 +48,15 @@ __decorate([
     __metadata("design:paramtypes", [models_1.SignupDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signupLocal", null);
+__decorate([
+    (0, decorator_1.Public)(),
+    (0, common_1.Get)('local/verify/:code'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('code')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyEmail", null);
 __decorate([
     (0, decorator_1.Public)(),
     (0, common_1.Post)('local/signin'),

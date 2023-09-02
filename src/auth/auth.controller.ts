@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards,Req } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards,Req, Get, Param } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { SignupDto, SigninDto } from "./models";
 import { Tokens } from "./types";
@@ -25,11 +25,20 @@ export class AuthController {
     //     return await this.authService.signin(dto);
     // }
 
+
     @Public()
     @Post('local/signup')
     @HttpCode(HttpStatus.CREATED)
     signupLocal(@Body() dto: SignupDto): Promise<Tokens> {
         return this.authService.signupLocal(dto);
+    }
+
+    @Public()
+    @Get('local/verify/:code')
+    @HttpCode(HttpStatus.OK)
+    public async verifyEmail(@Param('code') code:string){
+        await this.verifyEmail(code);
+        return "Account succesfully verified!";
     }
 
     @Public()

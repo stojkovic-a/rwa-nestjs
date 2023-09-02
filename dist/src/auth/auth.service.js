@@ -61,6 +61,18 @@ let AuthService = exports.AuthService = class AuthService {
         const roles = [enum_1.Role.User];
         if (dto.isPlayer)
             roles.push(enum_1.Role.Player);
+        const userExists = await this.userRepo.findOneBy({ email: dto.email });
+        if (userExists) {
+            if (userExists.accountVerified) {
+                throw new common_2.ConflictException("Account already exists");
+            }
+            else if (userExists.registrationDateTime + this.config.get['VALIDATION_CODE_PERIOD_MS'] < Date.now()) {
+                await this.userRepo.delete(userExists.id);
+            }
+            else {
+                throw new common_2.ForbiddenException("Verify the account");
+            }
+        }
         const user = await this.userRepo.create({
             email: dto.email,
             passwordHash: hash,
@@ -79,7 +91,36 @@ let AuthService = exports.AuthService = class AuthService {
         await this.userRepo.save(user);
         const tokens = await this.getTokens(user.id, user.email, user.roles);
         await this.updateRtHash(user.id, tokens.refresh_token);
+        const emailBody = this.config.get('API_URL')
+            + this.config.get('VERIFICATION_ROUTE')
+            + user.verificationCode;
+        await this.sendVerificationEmail(user.email, emailBody);
         return tokens;
+    }
+    async sendVerificationEmail(userMail, link) {
+        const nodemailer = require('nodemailer');
+        const transporter = nodemailer.createTransport({
+            host: this.config.get('NODEMAILER_HOST'),
+            port: this.config.get('NODEMAILER_PORT'),
+            secure: true,
+            auth: {
+                user: this.config.get('EMAIL'),
+                pass: this.config.get('EMAIL_PASSWORD')
+            }
+        });
+        await transporter.sendMail({
+            from: `"Chess Forum No Reply" <${this.config.get('EMAIL')}>`,
+            to: userMail,
+            subject: "Account verification",
+            text: "Click the following link to verify your account:",
+            html: `<a href=${link}>Click me</a>`
+        });
+    }
+    async verifyEmail(code) {
+        const user = await this.userRepo.findOneBy({ verificationCode: code });
+        if (!user)
+            throw new common_1.NotFoundException("Invalid Verification Code");
+        await this.userRepo.update(user.id, { accountVerified: true });
     }
     async updateRtHash(userId, rt) {
         const hash = await this.hashData(rt);

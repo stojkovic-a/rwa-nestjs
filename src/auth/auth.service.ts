@@ -1,16 +1,17 @@
-import { HttpCode, Injectable } from "@nestjs/common";
+import { HttpCode, Injectable, NotFoundException } from "@nestjs/common";
 import { UserService } from "src/user/user.service";
 import { SignupDto, SigninDto } from "./models";
 import * as argon from 'argon2';
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/models/user.entity";
 import { Repository, TypeORMError } from "typeorm";
-import { ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from "@nestjs/config";
 import { generateSecureRandomString } from "./code-generation";
 import { Role } from "./enum";
 import { Tokens } from "./types";
+import nodemailer from 'nodemailer';
 
 @Injectable()
 export class AuthService {
@@ -133,6 +134,17 @@ export class AuthService {
         if (dto.isPlayer)
             roles.push(Role.Player)
 
+        const userExists = await this.userRepo.findOneBy({ email: dto.email });
+        if (userExists) {
+            if (userExists.accountVerified) {
+                throw new ConflictException("Account already exists");
+            } else if (userExists.registrationDateTime + this.config.get['VALIDATION_CODE_PERIOD_MS'] < Date.now()) {
+                await this.userRepo.delete(userExists.id);
+            }else{
+                throw new ForbiddenException("Verify the account")
+            }
+        }
+
         const user = await this.userRepo.create({
             email: dto.email,
             passwordHash: hash,
@@ -153,8 +165,44 @@ export class AuthService {
         const tokens = await this.getTokens(user.id, user.email, user.roles);
         await this.updateRtHash(user.id, tokens.refresh_token);
 
+        const emailBody =
+            this.config.get('API_URL')
+            + this.config.get('VERIFICATION_ROUTE')
+            + user.verificationCode;
+        await this.sendVerificationEmail(user.email, emailBody);
+
         return tokens;
     }
+
+    async sendVerificationEmail(userMail: string, link: string) {
+        const nodemailer = require('nodemailer');
+        const transporter: nodemailer.Transporter = nodemailer.createTransport({
+            host: this.config.get('NODEMAILER_HOST'),
+            port: this.config.get('NODEMAILER_PORT'),
+            secure: true,
+            auth: {
+                user: this.config.get('EMAIL'),
+                pass: this.config.get('EMAIL_PASSWORD')
+            }
+        });
+
+        await transporter.sendMail({
+            from: `"Chess Forum No Reply" <${this.config.get('EMAIL')}>`,
+            to: userMail,
+            subject: "Account verification",
+            text: "Click the following link to verify your account:",
+            html: `<a href=${link}>Click me</a>`
+        })
+    }
+    async verifyEmail(code: string) {
+        const user: User | null = await this.userRepo.findOneBy({ verificationCode: code });
+        if (!user)
+            throw new NotFoundException("Invalid Verification Code");
+
+        await this.userRepo.update(user.id, { accountVerified: true });
+    }
+
+
 
     async updateRtHash(userId: number, rt: string) {
         const hash = await this.hashData(rt);
@@ -191,7 +239,7 @@ export class AuthService {
 
     async refreshTokens(userId: number, rt: string) {
         const user = await this.userRepo.findOneBy({ id: userId });
-        if (!user|| !user.refreshTokenHash)
+        if (!user || !user.refreshTokenHash)
             throw new ForbiddenException('Acces Denied');
 
         const rtMatches = await argon.verify(user.refreshTokenHash, rt);
