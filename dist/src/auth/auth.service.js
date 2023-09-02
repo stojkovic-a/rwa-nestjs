@@ -99,10 +99,11 @@ let AuthService = exports.AuthService = class AuthService {
     }
     async sendVerificationEmail(userMail, link) {
         const nodemailer = require('nodemailer');
+        console.log(this.config.get("NODEMAILER_HOST"));
+        console.log(this.config.get("NODEMAILER_PORT"));
         const transporter = nodemailer.createTransport({
             host: this.config.get('NODEMAILER_HOST'),
             port: this.config.get('NODEMAILER_PORT'),
-            secure: true,
             auth: {
                 user: this.config.get('EMAIL'),
                 pass: this.config.get('EMAIL_PASSWORD')
@@ -112,8 +113,7 @@ let AuthService = exports.AuthService = class AuthService {
             from: `"Chess Forum No Reply" <${this.config.get('EMAIL')}>`,
             to: userMail,
             subject: "Account verification",
-            text: "Click the following link to verify your account:",
-            html: `<a href=${link}>Click me</a>`
+            html: `Click the following link to verify your account:<a href=${link}>Click me</a>`
         });
     }
     async verifyEmail(code) {

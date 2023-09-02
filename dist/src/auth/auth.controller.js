@@ -26,8 +26,8 @@ let AuthController = exports.AuthController = class AuthController {
         return this.authService.signupLocal(dto);
     }
     async verifyEmail(code) {
-        await this.verifyEmail(code);
-        return "Account succesfully verified!";
+        await this.authService.verifyEmail(code);
+        return "Account successfully verified!";
     }
     signinLocal(dto) {
         return this.authService.signinLocal(dto);

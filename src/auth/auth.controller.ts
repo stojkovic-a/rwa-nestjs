@@ -37,8 +37,8 @@ export class AuthController {
     @Get('local/verify/:code')
     @HttpCode(HttpStatus.OK)
     public async verifyEmail(@Param('code') code:string){
-        await this.verifyEmail(code);
-        return "Account succesfully verified!";
+        await this.authService.verifyEmail(code);
+        return "Account successfully verified!";
     }
 
     @Public()
