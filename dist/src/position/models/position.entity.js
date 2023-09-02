@@ -9,15 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Position = exports.LastColor = void 0;
+exports.Position = void 0;
 const position_to_game_entity_1 = require("../../position-to-game/models/position-to-game.entity");
 const typeorm_1 = require("typeorm");
-var LastColor;
-(function (LastColor) {
-    LastColor["WHITE"] = "white";
-    LastColor["BLACK"] = "black";
-    LastColor["NONE"] = "none";
-})(LastColor || (exports.LastColor = LastColor = {}));
 let Position = exports.Position = class Position {
 };
 __decorate([

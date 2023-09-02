@@ -1,28 +1,46 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common';
-import { User } from './models/user.entity';
+import { Controller, Get, Param, Post, Body, Delete, Put, ParseIntPipe,HttpCode, HttpStatus } from '@nestjs/common';
+import { User, UserDto } from './models';
 import { UserService } from './user.service';
-import { JwtGuard,RolesGuard } from 'src/auth/guard/index';
-import { GetUser,Roles} from '../auth/decorator/index';
-import { Role } from 'src/auth/enum/index';
+import { GetUser, Roles } from '../auth/decorator';
+import { Role } from 'src/auth/enum';
+
 @Controller('user')
 export class UserController {
 
-    constructor(private userService:UserService){
+    constructor(private userService: UserService) {
 
     }
 
     @Get('me')
     getMe(
         @GetUser() user: User,
-        ) {
+    ) {
         return user;
     }
 
     @Get()
-    @Roles(Role.Admin,Role.Player)
-    public async getAllUsers(){
+    @Roles(Role.Admin, Role.Player)
+    public async getAllUsers() {
         return this.userService.getAllUsers();
     }
+
+    @Put(':id')
+    @Roles(Role.Admin)
+    @HttpCode(HttpStatus.OK)
+    public async updateUser(
+        @Param("id", ParseIntPipe) id: number,
+        @Body() dto: UserDto
+    ) {
+        return this.userService.updateUser(id,dto);
+    }
+
+    @Delete(':id')
+    @Roles(Role.Admin)
+    @HttpCode(HttpStatus.OK)
+    public async deleteUser(@Param("id", ParseIntPipe) id: number) {
+        return this.userService.deleteUser(id);
+    }
+
 
 
 }

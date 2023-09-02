@@ -24,6 +24,12 @@ let UserService = exports.UserService = class UserService {
     getAllUsers() {
         return this.userRepo.find();
     }
+    async updateUser(id, dto) {
+        return await this.userRepo.update(id, dto);
+    }
+    async deleteUser(id) {
+        return await this.userRepo.delete(id);
+    }
 };
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),

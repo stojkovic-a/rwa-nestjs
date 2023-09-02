@@ -21,6 +21,21 @@ let PositionService = exports.PositionService = class PositionService {
     constructor(positionRepo) {
         this.positionRepo = positionRepo;
     }
+    async getPosition(id) {
+        return await this.positionRepo.findOneBy({ id: id });
+    }
+    async addPosition(positionString) {
+        const position = this.positionRepo.create({ position: positionString });
+        return await this.positionRepo.save(position);
+    }
+    async deletePosition(id) {
+        return await this.positionRepo.delete(id);
+    }
+    async updatePosition(id, posString) {
+        return await this.positionRepo.update(id, {
+            position: posString
+        });
+    }
 };
 exports.PositionService = PositionService = __decorate([
     (0, common_1.Injectable)(),
