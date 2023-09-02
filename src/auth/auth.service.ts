@@ -158,7 +158,7 @@ export class AuthService {
 
     async updateRtHash(userId: number, rt: string) {
         const hash = await this.hashData(rt);
-        await this.userRepo.update(userId, { refreshTokenHash: rt });
+        await this.userRepo.update(userId, { refreshTokenHash: hash });
     }
 
     async signinLocal(dto: SigninDto): Promise<Tokens> {
@@ -190,14 +190,11 @@ export class AuthService {
     }
 
     async refreshTokens(userId: number, rt: string) {
-        console.log(rt);
         const user = await this.userRepo.findOneBy({ id: userId });
-        if (!user)
+        if (!user|| !user.refreshTokenHash)
             throw new ForbiddenException('Acces Denied');
-        console.log('dasdadasddas')
-        console.log(user.refreshTokenHash);
 
-        const rtMatches = await argon(user.refreshTokenHash, rt);
+        const rtMatches = await argon.verify(user.refreshTokenHash, rt);
         if (!rtMatches)
             throw new ForbiddenException('Acces Denied');
 

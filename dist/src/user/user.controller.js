@@ -16,9 +16,8 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_entity_1 = require("./models/user.entity");
 const user_service_1 = require("./user.service");
-const index_1 = require("../auth/guard/index");
-const index_2 = require("../auth/decorator/index");
-const index_3 = require("../auth/enum/index");
+const index_1 = require("../auth/decorator/index");
+const index_2 = require("../auth/enum/index");
 let UserController = exports.UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -32,17 +31,14 @@ let UserController = exports.UserController = class UserController {
 };
 __decorate([
     (0, common_1.Get)('me'),
-    (0, common_1.UseGuards)(index_1.JwtGuard),
-    __param(0, (0, index_2.GetUser)()),
+    __param(0, (0, index_1.GetUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getMe", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, index_2.Roles)(index_3.Role.Admin, index_3.Role.Player),
-    (0, common_1.UseGuards)(index_1.RolesGuard),
-    (0, common_1.UseGuards)(index_1.JwtGuard),
+    (0, index_1.Roles)(index_2.Role.Admin, index_2.Role.Player),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

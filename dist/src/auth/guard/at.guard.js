@@ -9,28 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RolesGuard = void 0;
-const common_1 = require("@nestjs/common");
+exports.AtGuard = void 0;
+const passport_1 = require("@nestjs/passport");
 const core_1 = require("@nestjs/core");
-const roles_decorator_1 = require("../decorator/roles.decorator");
-let RolesGuard = exports.RolesGuard = class RolesGuard {
+const common_1 = require("@nestjs/common");
+let AtGuard = exports.AtGuard = class AtGuard extends (0, passport_1.AuthGuard)('jwt') {
     constructor(reflector) {
+        super();
         this.reflector = reflector;
     }
-    canActivate(context) {
-        const requiredRoles = this.reflector.getAllAndOverride(roles_decorator_1.ROLES_KEY, [
-            context.getHandler(),
-            context.getClass(),
+    canActivate(ctx) {
+        const isPublic = this.reflector.getAllAndOverride('isPublic', [
+            ctx.getHandler(),
+            ctx.getClass()
         ]);
-        if (!requiredRoles) {
+        if (isPublic)
             return true;
-        }
-        const { user } = context.switchToHttp().getRequest();
-        return requiredRoles.some((role) => user.roles?.includes(role));
+        return super.canActivate(ctx);
     }
 };
-exports.RolesGuard = RolesGuard = __decorate([
+exports.AtGuard = AtGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [core_1.Reflector])
-], RolesGuard);
-//# sourceMappingURL=roles.guard.js.map
+], AtGuard);
+//# sourceMappingURL=at.guard.js.map

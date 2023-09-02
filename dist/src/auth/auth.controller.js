@@ -16,7 +16,8 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const models_1 = require("./models");
-const passport_1 = require("@nestjs/passport");
+const guard_1 = require("./guard");
+const decorator_1 = require("./decorator");
 let AuthController = exports.AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -27,16 +28,15 @@ let AuthController = exports.AuthController = class AuthController {
     signinLocal(dto) {
         return this.authService.signinLocal(dto);
     }
-    async logout(req) {
-        const user = req.user;
-        return await this.authService.logout(user['sub']);
+    async logout(userId) {
+        return await this.authService.logout(userId);
     }
-    refreshTokens(req) {
-        const user = req.user;
-        return this.authService.refreshTokens(user['sub'], user['refreshToken']);
+    refreshTokens(userId, rt) {
+        return this.authService.refreshTokens(userId, rt);
     }
 };
 __decorate([
+    (0, decorator_1.Public)(),
     (0, common_1.Post)('local/signup'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     __param(0, (0, common_1.Body)()),
@@ -45,6 +45,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signupLocal", null);
 __decorate([
+    (0, decorator_1.Public)(),
     (0, common_1.Post)('local/signin'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Body)()),
@@ -53,21 +54,22 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signinLocal", null);
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Post)('logout'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    __param(0, (0, common_1.Req)()),
+    __param(0, (0, decorator_1.GetCurrentUserId)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt-refresh')),
+    (0, decorator_1.Public)(),
+    (0, common_1.UseGuards)(guard_1.RtGuard),
     (0, common_1.Post)('refresh'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    __param(0, (0, common_1.Req)()),
+    __param(0, (0, decorator_1.GetCurrentUserId)()),
+    __param(1, (0, decorator_1.GetUser)('refreshToken')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Number, String]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "refreshTokens", null);
 exports.AuthController = AuthController = __decorate([

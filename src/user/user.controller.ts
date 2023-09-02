@@ -12,7 +12,6 @@ export class UserController {
     }
 
     @Get('me')
-    @UseGuards(JwtGuard)
     getMe(
         @GetUser() user: User,
         ) {
@@ -21,8 +20,6 @@ export class UserController {
 
     @Get()
     @Roles(Role.Admin,Role.Player)
-    @UseGuards(RolesGuard)
-    @UseGuards(JwtGuard)
     public async getAllUsers(){
         return this.userService.getAllUsers();
     }

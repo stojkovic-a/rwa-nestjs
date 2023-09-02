@@ -17,6 +17,8 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_config_1 = require("../typeorm.config");
 const position_to_game_module_1 = require("./position-to-game/position-to-game.module");
 const config_1 = require("@nestjs/config");
+const guard_1 = require("./auth/guard");
+const core_1 = require("@nestjs/core");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -32,6 +34,16 @@ exports.AppModule = AppModule = __decorate([
             position_module_1.PositionModule,
             typeorm_1.TypeOrmModule.forRoot(typeorm_config_1.typeOrmConfig),
             position_to_game_module_1.PositionToGameModule,
+        ],
+        providers: [
+            {
+                provide: core_1.APP_GUARD,
+                useClass: guard_1.AtGuard
+            },
+            {
+                provide: core_1.APP_GUARD,
+                useClass: guard_1.RolesGuard
+            }
         ]
     })
 ], AppModule);

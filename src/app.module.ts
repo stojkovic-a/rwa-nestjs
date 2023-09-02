@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from 'typeorm.config';
 import { PositionToGameModule } from './position-to-game/position-to-game.module';
 import { ConfigModule } from '@nestjs/config';
+import { AtGuard, RolesGuard } from './auth/guard';
+import { APP_GUARD } from '@nestjs/core'
 
 
 @Module({
@@ -22,6 +24,16 @@ import { ConfigModule } from '@nestjs/config';
     PositionModule,
     TypeOrmModule.forRoot(typeOrmConfig),
     PositionToGameModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AtGuard
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard
+    }
   ]
 })
 export class AppModule { }
