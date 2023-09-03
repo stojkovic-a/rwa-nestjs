@@ -28,10 +28,14 @@ export class Tournament{
     })
     gamesType:GameType
 
-    @OneToMany(()=>Game,(game)=>game.tournament)
+    @OneToMany(()=>Game,(game)=>game.tournament,{
+        lazy:true
+    })
     games:Game[];
 
-    @ManyToMany(()=>User,(user)=>user.tournamentParticipations)
+    @ManyToMany(()=>User,(user)=>user.tournamentParticipations,{
+        lazy:true
+    })
     players:User[];
 
 }

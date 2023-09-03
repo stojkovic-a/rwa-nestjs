@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Game = void 0;
 const position_to_game_entity_1 = require("../../position-to-game/models/position-to-game.entity");
-const position_entity_1 = require("../../position/models/position.entity");
 const tournament_entity_1 = require("../../tournament/models/tournament.entity");
 const user_entity_1 = require("../../user/models/user.entity");
 const typeorm_1 = require("typeorm");
@@ -48,16 +47,13 @@ __decorate([
     __metadata("design:type", Number)
 ], Game.prototype, "increment", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => position_entity_1.Position),
-    (0, typeorm_1.JoinTable)(),
-    __metadata("design:type", Array)
-], Game.prototype, "positions", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => tournament_entity_1.Tournament, (tournament) => tournament.games),
+    (0, typeorm_1.ManyToOne)(() => tournament_entity_1.Tournament, (tournament) => tournament.games, {
+        lazy: true
+    }),
     __metadata("design:type", tournament_entity_1.Tournament)
 ], Game.prototype, "tournament", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => position_to_game_entity_1.PositionToGame, (ptg) => ptg.game),
+    (0, typeorm_1.OneToMany)(() => position_to_game_entity_1.PositionToGame, (ptg) => ptg.game, {}),
     __metadata("design:type", Array)
 ], Game.prototype, "positionToGame", void 0);
 exports.Game = Game = __decorate([

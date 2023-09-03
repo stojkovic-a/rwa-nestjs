@@ -17,12 +17,20 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./models/user.entity");
 const typeorm_2 = require("typeorm");
+const enum_1 = require("../auth/enum");
 let UserService = exports.UserService = class UserService {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
     getAllUsers() {
         return this.userRepo.find();
+    }
+    async getPlayer(id) {
+        const user = await this.userRepo.findOneBy({ id: id });
+        if (user.roles.includes(enum_1.Role.Player)) {
+            return user;
+        }
+        throw new common_1.NotFoundException("User not Found");
     }
     async updateUser(id, dto) {
         return await this.userRepo.update(id, dto);

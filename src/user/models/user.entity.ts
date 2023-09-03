@@ -65,13 +65,19 @@ export class User{
     })
     refreshTokenHash:string;
 
-    @ManyToMany(()=>Tournament,(tournament)=>tournament.players)
+    @ManyToMany(()=>Tournament,(tournament)=>tournament.players,{
+        lazy:true
+    })
     @JoinTable()
     tournamentParticipations:Tournament[];
 
-    @OneToMany(()=>Game,(game)=>game.whitePlayer)
+    @OneToMany(()=>Game,(game)=>game.whitePlayer,{
+        lazy:true
+    })
     whiteGames:Game[];
 
-    @OneToMany(()=>Game,(game)=>game.blackPlayer)
+    @OneToMany(()=>Game,(game)=>game.blackPlayer,{
+        lazy:true
+    })
     blackGames:Game[];
 }

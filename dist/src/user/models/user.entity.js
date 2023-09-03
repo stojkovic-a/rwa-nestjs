@@ -92,16 +92,22 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "refreshTokenHash", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => tournament_entity_1.Tournament, (tournament) => tournament.players),
+    (0, typeorm_1.ManyToMany)(() => tournament_entity_1.Tournament, (tournament) => tournament.players, {
+        lazy: true
+    }),
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
 ], User.prototype, "tournamentParticipations", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.whitePlayer),
+    (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.whitePlayer, {
+        lazy: true
+    }),
     __metadata("design:type", Array)
 ], User.prototype, "whiteGames", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.blackPlayer),
+    (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.blackPlayer, {
+        lazy: true
+    }),
     __metadata("design:type", Array)
 ], User.prototype, "blackGames", void 0);
 exports.User = User = __decorate([

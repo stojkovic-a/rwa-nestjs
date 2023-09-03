@@ -138,9 +138,9 @@ export class AuthService {
         if (userExists) {
             if (userExists.accountVerified) {
                 throw new ConflictException("Account already exists");
-            } else if (userExists.registrationDateTime + this.config.get['VALIDATION_CODE_PERIOD_MS'] < Date.now()) {
+            } else if (userExists.registrationDateTime + this.config.get('VALIDATION_CODE_PERIOD_MS') < Date.now()) {
                 await this.userRepo.delete(userExists.id);
-            }else{
+            } else {
                 throw new ForbiddenException("Verify the account")
             }
         }
@@ -199,7 +199,10 @@ export class AuthService {
         const user: User | null = await this.userRepo.findOneBy({ verificationCode: code });
         if (!user)
             throw new NotFoundException("Invalid Verification Code");
-
+        if (user.registrationDateTime + this.config.get('VALIDATION_CODE_PERIOD_MS') < Date.now) {
+            await this.userRepo.delete(user.id);
+            throw new ForbiddenException("Code expired");
+        }
         await this.userRepo.update(user.id, { accountVerified: true });
     }
 

@@ -1,3 +1,4 @@
+import { Delete } from "@nestjs/common";
 import { PositionToGame } from "src/position-to-game/models/position-to-game.entity";
 import { Position } from "src/position/models/position.entity";
 import { Tournament } from "src/tournament/models/tournament.entity";
@@ -23,6 +24,7 @@ export class Game{
         nullable:true
     })
     winnerId:number;
+    //0 ako je draw
 
     @Column()
     startingTime:number;
@@ -30,14 +32,13 @@ export class Game{
     @Column()
     increment:number;
 
-    @ManyToMany(()=>Position)
-    @JoinTable()
-    positions:Position[];
-
-    @ManyToOne(()=>Tournament,(tournament)=>tournament.games)
+    @ManyToOne(()=>Tournament,(tournament)=>tournament.games,{
+        lazy:true
+    })
     tournament:Tournament;
 
-    @OneToMany(()=>PositionToGame,(ptg)=>ptg.game)
+    @OneToMany(()=>PositionToGame,(ptg)=>ptg.game,{
+    })
     positionToGame:PositionToGame[];
     
 }

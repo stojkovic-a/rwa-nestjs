@@ -19,11 +19,15 @@ __decorate([
     __metadata("design:type", Number)
 ], Position.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({
+        unique: true
+    }),
     __metadata("design:type", String)
 ], Position.prototype, "position", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => position_to_game_entity_1.PositionToGame, (ptg) => ptg.position),
+    (0, typeorm_1.OneToMany)(() => position_to_game_entity_1.PositionToGame, (ptg) => ptg.position, {
+        lazy: true
+    }),
     __metadata("design:type", Array)
 ], Position.prototype, "positionToGame", void 0);
 exports.Position = Position = __decorate([

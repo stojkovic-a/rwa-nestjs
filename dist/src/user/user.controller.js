@@ -28,6 +28,9 @@ let UserController = exports.UserController = class UserController {
     async getAllUsers() {
         return this.userService.getAllUsers();
     }
+    getPlayer(id) {
+        return this.userService.getPlayer(id);
+    }
     async updateUser(id, dto) {
         return this.userService.updateUser(id, dto);
     }
@@ -49,6 +52,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getAllUsers", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "getPlayer", null);
 __decorate([
     (0, common_1.Put)(':id'),
     (0, decorator_1.Roles)(enum_1.Role.Admin),

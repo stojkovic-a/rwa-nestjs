@@ -50,7 +50,10 @@ __decorate([
     __metadata("design:type", position_entity_1.Position)
 ], PositionToGame.prototype, "position", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => game_entity_1.Game, (game) => game.positionToGame),
+    (0, typeorm_1.ManyToOne)(() => game_entity_1.Game, (game) => game.positionToGame, {
+        lazy: true,
+        onDelete: "CASCADE"
+    }),
     __metadata("design:type", game_entity_1.Game)
 ], PositionToGame.prototype, "game", void 0);
 exports.PositionToGame = PositionToGame = __decorate([

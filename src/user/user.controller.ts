@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Delete, Put, ParseIntPipe,HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put, ParseIntPipe, HttpCode, HttpStatus } from '@nestjs/common';
 import { User, UserDto } from './models';
 import { UserService } from './user.service';
 import { GetUser, Roles } from '../auth/decorator';
@@ -24,6 +24,14 @@ export class UserController {
         return this.userService.getAllUsers();
     }
 
+
+    @Get(':id')
+    @HttpCode(HttpStatus.OK)
+    public getPlayer(@Param('id', ParseIntPipe) id: number) {
+        return this.userService.getPlayer(id);
+    }
+
+
     @Put(':id')
     @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
@@ -31,7 +39,7 @@ export class UserController {
         @Param("id", ParseIntPipe) id: number,
         @Body() dto: UserDto
     ) {
-        return this.userService.updateUser(id,dto);
+        return this.userService.updateUser(id, dto);
     }
 
     @Delete(':id')

@@ -44,11 +44,15 @@ __decorate([
     __metadata("design:type", String)
 ], Tournament.prototype, "gamesType", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.tournament),
+    (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.tournament, {
+        lazy: true
+    }),
     __metadata("design:type", Array)
 ], Tournament.prototype, "games", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => user_entity_1.User, (user) => user.tournamentParticipations),
+    (0, typeorm_1.ManyToMany)(() => user_entity_1.User, (user) => user.tournamentParticipations, {
+        lazy: true
+    }),
     __metadata("design:type", Array)
 ], Tournament.prototype, "players", void 0);
 exports.Tournament = Tournament = __decorate([

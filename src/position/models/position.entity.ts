@@ -8,10 +8,14 @@ export class Position{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @Column()
+    @Column({
+        unique:true
+    })
     position:string;
 
-    @OneToMany(()=>PositionToGame,(ptg)=>ptg.position)
+    @OneToMany(()=>PositionToGame,(ptg)=>ptg.position,{
+        lazy:true
+    })
     positionToGame:PositionToGame[];
 
 }

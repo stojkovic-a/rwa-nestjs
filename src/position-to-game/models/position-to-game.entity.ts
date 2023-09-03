@@ -32,6 +32,9 @@ export class PositionToGame {
     @ManyToOne(()=>Position,(pos)=>pos.positionToGame)
     position:Position;
 
-    @ManyToOne(()=>Game,(game)=>game.positionToGame)
+    @ManyToOne(()=>Game,(game)=>game.positionToGame,{
+        lazy:true,
+        onDelete:"CASCADE"
+    })
     game:Game;
 }

@@ -66,7 +66,7 @@ let AuthService = exports.AuthService = class AuthService {
             if (userExists.accountVerified) {
                 throw new common_2.ConflictException("Account already exists");
             }
-            else if (userExists.registrationDateTime + this.config.get['VALIDATION_CODE_PERIOD_MS'] < Date.now()) {
+            else if (userExists.registrationDateTime + this.config.get('VALIDATION_CODE_PERIOD_MS') < Date.now()) {
                 await this.userRepo.delete(userExists.id);
             }
             else {
@@ -120,6 +120,10 @@ let AuthService = exports.AuthService = class AuthService {
         const user = await this.userRepo.findOneBy({ verificationCode: code });
         if (!user)
             throw new common_1.NotFoundException("Invalid Verification Code");
+        if (user.registrationDateTime + this.config.get('VALIDATION_CODE_PERIOD_MS') < Date.now) {
+            await this.userRepo.delete(user.id);
+            throw new common_2.ForbiddenException("Code expired");
+        }
         await this.userRepo.update(user.id, { accountVerified: true });
     }
     async updateRtHash(userId, rt) {
