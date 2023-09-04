@@ -84,4 +84,27 @@ export class TournamentController {
         return this.tournamentService.removePlayer(userId, tournamentId);
     }
 
+
+    @Put("addGame/:gameId/:tourId")
+    @Public()//
+    // @Roles(Role.Admin)
+    @HttpCode(HttpStatus.OK)
+    public addGame(
+        @Param('gameId', ParseIntPipe) gameId: number,
+        @Param('tourId', ParseIntPipe) tourId: number,
+    ) {
+        return this.tournamentService.addGame(gameId, tourId);
+    }
+
+    @Put("removePlayer/:gameId/:tourId")
+    @Public()//
+    // @Roles(Role.Admin)
+    @HttpCode(HttpStatus.OK)
+    public removeGame(
+        @Param('gameId', ParseIntPipe) gameId: number,
+        @Param('tourId', ParseIntPipe) tourId: number,
+    ) {
+        return this.tournamentService.removeGame(gameId, tourId);
+    }
+
 }

@@ -11,4 +11,6 @@ export declare class TournamentController {
     removePlayer(userId: number, tourId: number): Promise<import("./models").Tournament>;
     addSelf(tournamentId: number, userId: number): Promise<import("./models").Tournament | import("@nestjs/common").ForbiddenException>;
     removeSelf(tournamentId: number, userId: number): Promise<import("./models").Tournament>;
+    addGame(gameId: number, tourId: number): Promise<import("./models").Tournament>;
+    removeGame(gameId: number, tourId: number): Promise<import("./models").Tournament>;
 }

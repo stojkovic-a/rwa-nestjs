@@ -18,10 +18,12 @@ const typeorm_1 = require("@nestjs/typeorm");
 const tournament_entity_1 = require("./models/tournament.entity");
 const typeorm_2 = require("typeorm");
 const models_1 = require("../user/models");
+const models_2 = require("../game/models");
 let TournamentService = exports.TournamentService = class TournamentService {
-    constructor(tournamentRepo, userRepo) {
+    constructor(tournamentRepo, userRepo, gameRepo) {
         this.tournamentRepo = tournamentRepo;
         this.userRepo = userRepo;
+        this.gameRepo = gameRepo;
     }
     async getTournament(id) {
         return await this.tournamentRepo.findOneBy({ id: id });
@@ -70,12 +72,27 @@ let TournamentService = exports.TournamentService = class TournamentService {
         tournament.players = (await tournament.players).filter(p => p.id != player.id);
         return await this.tournamentRepo.save(tournament);
     }
+    async addGame(gameId, tourId) {
+        const game = await this.gameRepo.findOneBy({ id: gameId });
+        const tournament = await this.tournamentRepo.findOneBy({ id: tourId });
+        let canAdd = false;
+        (await tournament.games).push(game);
+        return await this.tournamentRepo.save(tournament);
+    }
+    async removeGame(gameId, tourId) {
+        const game = await this.gameRepo.findOneBy({ id: gameId });
+        const tournament = await this.tournamentRepo.findOneBy({ id: tourId });
+        tournament.games = (await tournament.games).filter(p => p.id != game.id);
+        return await this.tournamentRepo.save(tournament);
+    }
 };
 exports.TournamentService = TournamentService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(tournament_entity_1.Tournament)),
     __param(1, (0, typeorm_1.InjectRepository)(models_1.User)),
+    __param(2, (0, typeorm_1.InjectRepository)(models_2.Game)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository])
 ], TournamentService);
 //# sourceMappingURL=tournament.service.js.map

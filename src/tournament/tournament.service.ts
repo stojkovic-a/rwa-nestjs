@@ -4,13 +4,15 @@ import { GameType, Tournament } from './models/tournament.entity';
 import { Repository } from 'typeorm';
 import { TournamentUpdateDto, tournamentCreationDto } from './models';
 import { User } from 'src/user/models';
+import { Game } from 'src/game/models';
 
 @Injectable()
 export class TournamentService {
 
     constructor(
         @InjectRepository(Tournament) private tournamentRepo: Repository<Tournament>,
-        @InjectRepository(User) private userRepo: Repository<User>
+        @InjectRepository(User) private userRepo: Repository<User>,
+        @InjectRepository(Game) private gameRepo: Repository<Game>,
     ) {
 
     }
@@ -58,8 +60,8 @@ export class TournamentService {
         }
         if (canAdd) {
             const alreadySignedUp = await tournament.players;
-            let addedAlready:number=0;
-            addedAlready=alreadySignedUp.filter(p=>p.id==player.id).length;
+            let addedAlready: number = 0;
+            addedAlready = alreadySignedUp.filter(p => p.id == player.id).length;
             if (!addedAlready) {
                 (await tournament.players).push(player);
                 return await this.tournamentRepo.save(tournament);
@@ -73,6 +75,24 @@ export class TournamentService {
         const player = await this.userRepo.findOneBy({ id: userId });
         const tournament = await this.tournamentRepo.findOneBy({ id: tourId });
         tournament.players = (await tournament.players).filter(p => p.id != player.id);
+        return await this.tournamentRepo.save(tournament);
+    }
+
+
+
+    public async addGame(gameId: number, tourId: number) {
+        const game = await this.gameRepo.findOneBy({ id: gameId });
+        const tournament = await this.tournamentRepo.findOneBy({ id: tourId });
+        let canAdd: boolean = false;
+        //proveri da li su oba igraca u turnir 
+        (await tournament.games).push(game);
+        return await this.tournamentRepo.save(tournament);
+    }
+
+    public async removeGame(gameId: number, tourId: number) {
+        const game = await this.gameRepo.findOneBy({ id: gameId });
+        const tournament = await this.tournamentRepo.findOneBy({ id: tourId });
+        tournament.games = (await tournament.games).filter(p => p.id != game.id);
         return await this.tournamentRepo.save(tournament);
     }
 }

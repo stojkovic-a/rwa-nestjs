@@ -46,6 +46,12 @@ let TournamentController = exports.TournamentController = class TournamentContro
     removeSelf(tournamentId, userId) {
         return this.tournamentService.removePlayer(userId, tournamentId);
     }
+    addGame(gameId, tourId) {
+        return this.tournamentService.addGame(gameId, tourId);
+    }
+    removeGame(gameId, tourId) {
+        return this.tournamentService.removeGame(gameId, tourId);
+    }
 };
 __decorate([
     (0, common_1.Get)(':id'),
@@ -123,6 +129,26 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", void 0)
 ], TournamentController.prototype, "removeSelf", null);
+__decorate([
+    (0, common_1.Put)("addGame/:gameId/:tourId"),
+    (0, decorator_1.Public)(),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('gameId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('tourId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", void 0)
+], TournamentController.prototype, "addGame", null);
+__decorate([
+    (0, common_1.Put)("removePlayer/:gameId/:tourId"),
+    (0, decorator_1.Public)(),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('gameId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('tourId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", void 0)
+], TournamentController.prototype, "removeGame", null);
 exports.TournamentController = TournamentController = __decorate([
     (0, common_1.Controller)('tournament'),
     __metadata("design:paramtypes", [tournament_service_1.TournamentService])
