@@ -34,7 +34,8 @@ export class PositionToGame {
 
     @ManyToOne(()=>Game,(game)=>game.positionToGame,{
         lazy:true,
-        onDelete:"CASCADE"
+        onDelete:"CASCADE",
+        cascade:true
     })
     game:Game;
 }

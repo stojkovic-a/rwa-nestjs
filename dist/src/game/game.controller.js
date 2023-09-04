@@ -16,7 +16,6 @@ exports.GameController = void 0;
 const common_1 = require("@nestjs/common");
 const game_service_1 = require("./game.service");
 const decorator_1 = require("../auth/decorator");
-const enum_1 = require("../auth/enum");
 const models_1 = require("./models");
 let GameController = exports.GameController = class GameController {
     constructor(gameService) {
@@ -46,7 +45,7 @@ __decorate([
 ], GameController.prototype, "getGame", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, decorator_1.Roles)(enum_1.Role.Admin),
+    (0, decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -54,8 +53,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "createGame", null);
 __decorate([
+    (0, decorator_1.Public)(),
     (0, common_1.Put)(":id"),
-    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),

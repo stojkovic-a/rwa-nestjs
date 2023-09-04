@@ -9,7 +9,7 @@ export class GameController {
     constructor(private gameService: GameService) {
     }
 
-    @Public()
+    @Public()//
     @Get(':id')
     @HttpCode(HttpStatus.OK)
     public getGame(@Param('id', ParseIntPipe) id: number) {
@@ -18,20 +18,22 @@ export class GameController {
 
 
     @Post()
-    @Roles(Role.Admin)
+    @Public()//
+    // @Roles(Role.Admin)
     @HttpCode(HttpStatus.CREATED)
     public createGame(@Body() dto: gameCreationDto) {
         return this.gameService.createGame(dto);
     }
 
+    @Public()//
     @Put(":id")
-    @Roles(Role.Admin)
+    // @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public updateGame(@Param("id", ParseIntPipe) id: number, @Body() dto: gameUpdateDto) {
         return this.gameService.updateGame(id, dto);
     }
 
-    @Public()
+    @Public()//
     @Delete(':id')
     // @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)

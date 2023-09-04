@@ -7,9 +7,11 @@ export declare enum GameType {
 }
 export declare class Tournament {
     id: number;
+    tournamentName: string;
     startingDate: Date;
     endingDate: Date;
     gamesType: GameType;
+    minElo: number;
     games: Game[];
     players: User[];
 }

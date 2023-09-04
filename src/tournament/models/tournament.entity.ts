@@ -2,40 +2,46 @@ import { Game } from "src/game/models/game.entity";
 import { User } from "src/user/models/user.entity";
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-export enum GameType{
-    CLASSICAL='classical',
-    RAPID='rapid',
-    BLITZ='blitz'
+export enum GameType {
+    CLASSICAL = 'classical',
+    RAPID = 'rapid',
+    BLITZ = 'blitz'
 }
 
 @Entity()
-export class Tournament{
+export class Tournament {
     @PrimaryGeneratedColumn()
-    id:number;
+    id: number;
 
     @Column()
-    startingDate:Date;
+    tournamentName: string;
+
+    @Column()
+    startingDate: Date;
 
     @Column({
-        nullable:true
+        nullable: true
     })
-    endingDate:Date;
+    endingDate: Date;
 
     @Column({
-        type:'enum',
-        enum:GameType,
-        default:GameType.CLASSICAL
+        type: 'enum',
+        enum: GameType,
+        default: GameType.CLASSICAL
     })
-    gamesType:GameType
+    gamesType: GameType
 
-    @OneToMany(()=>Game,(game)=>game.tournament,{
-        lazy:true
-    })
-    games:Game[];
+    @Column()
+    minElo:number;
 
-    @ManyToMany(()=>User,(user)=>user.tournamentParticipations,{
-        lazy:true
+    @OneToMany(() => Game, (game) => game.tournament, {
+        lazy: true
     })
-    players:User[];
+    games: Game[];
+
+    @ManyToMany(() => User, (user) => user.tournamentParticipations, {
+        lazy: true
+    })
+    players: User[];
 
 }

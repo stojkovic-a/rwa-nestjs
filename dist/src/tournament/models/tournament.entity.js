@@ -27,6 +27,10 @@ __decorate([
 ], Tournament.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Tournament.prototype, "tournamentName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Date)
 ], Tournament.prototype, "startingDate", void 0);
 __decorate([
@@ -43,6 +47,10 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Tournament.prototype, "gamesType", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Tournament.prototype, "minElo", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.tournament, {
         lazy: true

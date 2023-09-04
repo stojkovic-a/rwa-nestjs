@@ -8,8 +8,7 @@ import { Tournament } from 'src/tournament/models/tournament.entity';
 import { Position } from 'src/position/models/position.entity';
 import { LastColor, PositionToGame } from 'src/position-to-game/models/position-to-game.entity';
 import { Chess } from 'chess.js';
-import { privateDecrypt } from 'crypto';
-import { async } from 'rxjs';
+
 @Injectable()
 export class GameService {
 
@@ -43,16 +42,12 @@ export class GameService {
         game=await this.gameRepo.save(game);
 
         let positionsToGame=[];
-        console.log(dto.gamePGN.length!=0);
         if (dto.gamePGN.length!=0) {
             const chess = new Chess();
             chess.loadPgn(dto.gamePGN.join('\n'));
             const moves = chess.history();
             let chess1 = new Chess();
-            console.log(moves.length,"moves length");
-            console.log(moves);
             for (let i = 0; i < moves.length; i++) {
-                console.log("uso u petlju");
                 chess1.move(moves[i]);
                 const fen = chess1.fen();
                 let pos = await this.positionRepo.findOneBy({ position: fen });
@@ -62,7 +57,6 @@ export class GameService {
                         position: fen
                     });
                     pos = (await this.positionRepo.save(posEntity));
-                    console.log(pos);
                 }
                 let posToGame = await this.posToGameRepo.create({
                     moveNumber: i + 1,

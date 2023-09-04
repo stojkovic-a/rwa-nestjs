@@ -52,7 +52,8 @@ __decorate([
 __decorate([
     (0, typeorm_1.ManyToOne)(() => game_entity_1.Game, (game) => game.positionToGame, {
         lazy: true,
-        onDelete: "CASCADE"
+        onDelete: "CASCADE",
+        cascade: true
     }),
     __metadata("design:type", game_entity_1.Game)
 ], PositionToGame.prototype, "game", void 0);
