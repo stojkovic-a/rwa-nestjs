@@ -14,7 +14,7 @@ export class PositionToGameController {
     // @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public getPosToGame(@Param('id', ParseIntPipe) id: number) {
-
+        return this.posToGameService.getPosToGame(id);
     }
 
     @Post()
@@ -22,7 +22,7 @@ export class PositionToGameController {
     // @Roles(Role.Admin)
     @HttpCode(HttpStatus.CREATED)
     public createPosToGame(@Body() dto: posToGameCreateionDto) {
-
+        return this.posToGameService.createPosToGame(dto);
     }
 
     @Put(':id')
@@ -33,7 +33,7 @@ export class PositionToGameController {
         @Param('id', ParseIntPipe) id: number,
         @Body() dto: posToGameUpdateDto,
     ) {
-
+        return this.posToGameService.updatePosToGame(id, dto);
     }
 
     @Delete(':id')
@@ -41,6 +41,6 @@ export class PositionToGameController {
     @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public deletePosToGame(@Param('id', ParseIntPipe) id: number) {
-
+        return this.posToGameService.deletePosToGame(id);
     }
 }

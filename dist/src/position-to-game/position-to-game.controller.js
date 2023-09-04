@@ -23,12 +23,16 @@ let PositionToGameController = exports.PositionToGameController = class Position
         this.posToGameService = posToGameService;
     }
     getPosToGame(id) {
+        return this.posToGameService.getPosToGame(id);
     }
     createPosToGame(dto) {
+        return this.posToGameService.createPosToGame(dto);
     }
     updatePosToGame(id, dto) {
+        return this.posToGameService.updatePosToGame(id, dto);
     }
     deletePosToGame(id) {
+        return this.posToGameService.deletePosToGame(id);
     }
 };
 __decorate([

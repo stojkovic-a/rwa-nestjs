@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PositionToGame } from './models/position-to-game.entity';
 import { Repository } from 'typeorm';
-import { posToGameCreateionDto } from './models';
+import { posToGameCreateionDto, posToGameUpdateDto } from './models';
 
 @Injectable()
 export class PositionToGameService {
@@ -24,7 +24,9 @@ export class PositionToGameService {
         return await this.posToGameRepo.save(posToGame);
     }
 
-    public async 
+    public async updatePosToGame(id: number, dto: posToGameUpdateDto) {
+        return await this.posToGameRepo.update(id, dto);
+    }
 
 }
 

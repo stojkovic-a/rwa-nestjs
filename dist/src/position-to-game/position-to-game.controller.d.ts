@@ -3,8 +3,8 @@ import { PositionToGameService } from './position-to-game.service';
 export declare class PositionToGameController {
     private posToGameService;
     constructor(posToGameService: PositionToGameService);
-    getPosToGame(id: number): void;
-    createPosToGame(dto: posToGameCreateionDto): void;
-    updatePosToGame(id: number, dto: posToGameUpdateDto): void;
-    deletePosToGame(id: number): void;
+    getPosToGame(id: number): Promise<import("./models").PositionToGame>;
+    createPosToGame(dto: posToGameCreateionDto): Promise<import("./models").PositionToGame>;
+    updatePosToGame(id: number, dto: posToGameUpdateDto): Promise<import("typeorm").UpdateResult>;
+    deletePosToGame(id: number): Promise<import("typeorm").DeleteResult>;
 }

@@ -31,6 +31,9 @@ let PositionToGameService = exports.PositionToGameService = class PositionToGame
         const posToGame = await this.posToGameRepo.create(dto);
         return await this.posToGameRepo.save(posToGame);
     }
+    async updatePosToGame(id, dto) {
+        return await this.posToGameRepo.update(id, dto);
+    }
 };
 exports.PositionToGameService = PositionToGameService = __decorate([
     (0, common_1.Injectable)(),
