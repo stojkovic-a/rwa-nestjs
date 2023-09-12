@@ -1,5 +1,5 @@
 import { Post, Delete, Put, HttpCode, HttpStatus, Body, Controller, Param, ParseIntPipe, Get } from '@nestjs/common';
-import { GameService } from './game.service';
+import { GameService } from './GameService';
 import { Public, Roles } from 'src/auth/decorator';
 import { Role } from 'src/auth/enum';
 import { gameCreationDto, gameUpdateDto } from './models';
@@ -16,6 +16,37 @@ export class GameController {
         return this.gameService.getGame(id);
     }
 
+    @Public()//
+    @Post('/pageFilter/:skip/:take')
+    @HttpCode(HttpStatus.OK)
+    public getGamesPaging(
+        @Param('skip', ParseIntPipe) skip: number,
+        @Param('take', ParseIntPipe) take: number,
+        @Body() params
+    ) {
+
+        return this.gameService.getGamesPaging(
+            skip,
+            take,
+            params.params,
+        );
+    }
+
+    @Public()//
+    @Get('/number/count')
+    @HttpCode(HttpStatus.OK)
+    public getNumberOfGames() {
+        return this.gameService.getNumberOfGames();
+    }
+
+    @Public()//
+    @Get('/positions/:id')
+    @HttpCode(HttpStatus.OK)
+    public getPositionsFromGame(
+        @Param('id', ParseIntPipe) id: number,
+    ) {
+        return this.gameService.getPositionsFromGame(id);
+    }
 
     @Post()
     @Public()//
@@ -40,6 +71,8 @@ export class GameController {
     public deleteGame(@Param('id', ParseIntPipe) id: number) {
         return this.gameService.deleteGame(id);
     }
+
+
 
 
 }

@@ -11,10 +11,14 @@ export class Game{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @ManyToOne(()=>User,(user)=>user.whiteGames)
+    @ManyToOne(()=>User,(user)=>user.whiteGames,{
+        lazy:true
+    })
     whitePlayer:User;
 
-    @ManyToOne(()=>User,(user)=>user.blackGames)
+    @ManyToOne(()=>User,(user)=>user.blackGames,{
+        lazy:true
+    })
     blackPlayer:User;
 
     @Column()
@@ -32,12 +36,16 @@ export class Game{
     @Column()
     increment:number;
 
+    @Column()
+    gamePgn:string;
+
     @ManyToOne(()=>Tournament,(tournament)=>tournament.games,{
         lazy:true
     })
     tournament:Tournament;
 
     @OneToMany(()=>PositionToGame,(ptg)=>ptg.game,{
+        lazy:true
     })
     positionToGame:PositionToGame[];
     

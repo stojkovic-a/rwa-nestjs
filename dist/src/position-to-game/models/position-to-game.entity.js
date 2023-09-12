@@ -46,7 +46,9 @@ __decorate([
     __metadata("design:type", Number)
 ], PositionToGame.prototype, "blackTimeLeft", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => position_entity_1.Position, (pos) => pos.positionToGame),
+    (0, typeorm_1.ManyToOne)(() => position_entity_1.Position, (pos) => pos.positionToGame, {
+        lazy: true
+    }),
     __metadata("design:type", position_entity_1.Position)
 ], PositionToGame.prototype, "position", void 0);
 __decorate([

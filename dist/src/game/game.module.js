@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameModule = void 0;
 const common_1 = require("@nestjs/common");
 const game_controller_1 = require("./game.controller");
-const game_service_1 = require("./game.service");
+const GameService_1 = require("./GameService");
 const typeorm_1 = require("@nestjs/typeorm");
 const game_entity_1 = require("./models/game.entity");
 const models_1 = require("../user/models");
@@ -28,7 +28,7 @@ exports.GameModule = GameModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([position_to_game_entity_1.PositionToGame])
         ],
         controllers: [game_controller_1.GameController],
-        providers: [game_service_1.GameService]
+        providers: [GameService_1.GameService]
     })
 ], GameModule);
 //# sourceMappingURL=game.module.js.map

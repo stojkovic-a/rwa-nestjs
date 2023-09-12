@@ -21,11 +21,15 @@ __decorate([
     __metadata("design:type", Number)
 ], Game.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.whiteGames),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.whiteGames, {
+        lazy: true
+    }),
     __metadata("design:type", user_entity_1.User)
 ], Game.prototype, "whitePlayer", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.blackGames),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.blackGames, {
+        lazy: true
+    }),
     __metadata("design:type", user_entity_1.User)
 ], Game.prototype, "blackPlayer", void 0);
 __decorate([
@@ -47,13 +51,19 @@ __decorate([
     __metadata("design:type", Number)
 ], Game.prototype, "increment", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Game.prototype, "gamePgn", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => tournament_entity_1.Tournament, (tournament) => tournament.games, {
         lazy: true
     }),
     __metadata("design:type", tournament_entity_1.Tournament)
 ], Game.prototype, "tournament", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => position_to_game_entity_1.PositionToGame, (ptg) => ptg.game, {}),
+    (0, typeorm_1.OneToMany)(() => position_to_game_entity_1.PositionToGame, (ptg) => ptg.game, {
+        lazy: true
+    }),
     __metadata("design:type", Array)
 ], Game.prototype, "positionToGame", void 0);
 exports.Game = Game = __decorate([

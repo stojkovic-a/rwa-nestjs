@@ -10,6 +10,9 @@ import { PositionToGameModule } from './position-to-game/position-to-game.module
 import { ConfigModule } from '@nestjs/config';
 import { AtGuard, RolesGuard } from './auth/guard';
 import { APP_GUARD } from '@nestjs/core'
+import { MiscController } from './misc/misc.controller';
+import { MiscService } from './misc/misc.service';
+import { MiscModule } from './misc/misc.module';
 
 
 @Module({
@@ -22,8 +25,10 @@ import { APP_GUARD } from '@nestjs/core'
     GameModule,
     TournamentModule,
     PositionModule,
+    MiscModule,
     TypeOrmModule.forRoot(typeOrmConfig),
     PositionToGameModule,
+    MiscModule,
   ],
   providers: [
     {
@@ -34,6 +39,6 @@ import { APP_GUARD } from '@nestjs/core'
       provide: APP_GUARD,
       useClass: RolesGuard
     }
-  ]
+  ],
 })
 export class AppModule { }

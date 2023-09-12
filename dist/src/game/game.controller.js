@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameController = void 0;
 const common_1 = require("@nestjs/common");
-const game_service_1 = require("./game.service");
+const GameService_1 = require("./GameService");
 const decorator_1 = require("../auth/decorator");
 const models_1 = require("./models");
 let GameController = exports.GameController = class GameController {
@@ -23,6 +23,15 @@ let GameController = exports.GameController = class GameController {
     }
     getGame(id) {
         return this.gameService.getGame(id);
+    }
+    getGamesPaging(skip, take, params) {
+        return this.gameService.getGamesPaging(skip, take, params.params);
+    }
+    getNumberOfGames() {
+        return this.gameService.getNumberOfGames();
+    }
+    getPositionsFromGame(id) {
+        return this.gameService.getPositionsFromGame(id);
     }
     createGame(dto) {
         return this.gameService.createGame(dto);
@@ -43,6 +52,34 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "getGame", null);
+__decorate([
+    (0, decorator_1.Public)(),
+    (0, common_1.Post)('/pageFilter/:skip/:take'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('skip', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('take', common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, Object]),
+    __metadata("design:returntype", void 0)
+], GameController.prototype, "getGamesPaging", null);
+__decorate([
+    (0, decorator_1.Public)(),
+    (0, common_1.Get)('/number/count'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], GameController.prototype, "getNumberOfGames", null);
+__decorate([
+    (0, decorator_1.Public)(),
+    (0, common_1.Get)('/positions/:id'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], GameController.prototype, "getPositionsFromGame", null);
 __decorate([
     (0, common_1.Post)(),
     (0, decorator_1.Public)(),
@@ -73,6 +110,6 @@ __decorate([
 ], GameController.prototype, "deleteGame", null);
 exports.GameController = GameController = __decorate([
     (0, common_1.Controller)('game'),
-    __metadata("design:paramtypes", [game_service_1.GameService])
+    __metadata("design:paramtypes", [GameService_1.GameService])
 ], GameController);
 //# sourceMappingURL=game.controller.js.map

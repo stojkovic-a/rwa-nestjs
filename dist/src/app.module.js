@@ -19,6 +19,7 @@ const position_to_game_module_1 = require("./position-to-game/position-to-game.m
 const config_1 = require("@nestjs/config");
 const guard_1 = require("./auth/guard");
 const core_1 = require("@nestjs/core");
+const misc_module_1 = require("./misc/misc.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -32,8 +33,10 @@ exports.AppModule = AppModule = __decorate([
             game_module_1.GameModule,
             tournament_module_1.TournamentModule,
             position_module_1.PositionModule,
+            misc_module_1.MiscModule,
             typeorm_1.TypeOrmModule.forRoot(typeorm_config_1.typeOrmConfig),
             position_to_game_module_1.PositionToGameModule,
+            misc_module_1.MiscModule,
         ],
         providers: [
             {
@@ -44,7 +47,7 @@ exports.AppModule = AppModule = __decorate([
                 provide: core_1.APP_GUARD,
                 useClass: guard_1.RolesGuard
             }
-        ]
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

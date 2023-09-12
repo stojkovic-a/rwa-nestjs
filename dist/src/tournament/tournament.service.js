@@ -43,7 +43,7 @@ let TournamentService = exports.TournamentService = class TournamentService {
         const tournament = await this.tournamentRepo.findOneBy({ id: tourId });
         let canAdd = false;
         if (tournament.gamesType === tournament_entity_1.GameType.CLASSICAL &&
-            player.classicalELo >= tournament.minElo) {
+            player.classicalElo >= tournament.minElo) {
             canAdd = true;
         }
         if (tournament.gamesType === tournament_entity_1.GameType.RAPID &&
@@ -51,7 +51,7 @@ let TournamentService = exports.TournamentService = class TournamentService {
             canAdd = true;
         }
         if (tournament.gamesType === tournament_entity_1.GameType.BLITZ &&
-            player.bltizElo >= tournament.minElo) {
+            player.blitzElo >= tournament.minElo) {
             canAdd = true;
         }
         if (canAdd) {

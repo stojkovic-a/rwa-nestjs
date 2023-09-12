@@ -9,6 +9,7 @@ export declare class Game {
     winnerId: number;
     startingTime: number;
     increment: number;
+    gamePgn: string;
     tournament: Tournament;
     positionToGame: PositionToGame[];
 }

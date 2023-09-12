@@ -53,7 +53,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], User.prototype, "classicalELo", void 0);
+], User.prototype, "classicalElo", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
@@ -61,7 +61,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], User.prototype, "bltizElo", void 0);
+], User.prototype, "blitzElo", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: "enum",

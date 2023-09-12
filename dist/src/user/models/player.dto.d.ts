@@ -1,4 +1,5 @@
-export declare class UserDto {
+export declare class PlayerDto {
+    id: number;
     firstName: string;
     lastName: string;
     dateOfBirth: Date;
@@ -6,6 +7,4 @@ export declare class UserDto {
     classicalElo: number;
     rapidElo: number;
     blitzElo: number;
-    isPlayer: boolean;
-    isAdmin: boolean;
 }

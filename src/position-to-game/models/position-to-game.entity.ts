@@ -29,7 +29,9 @@ export class PositionToGame {
     @Column()
     blackTimeLeft: number;
 
-    @ManyToOne(()=>Position,(pos)=>pos.positionToGame)
+    @ManyToOne(()=>Position,(pos)=>pos.positionToGame,{
+        lazy:true
+    })
     position:Position;
 
     @ManyToOne(()=>Game,(game)=>game.positionToGame,{

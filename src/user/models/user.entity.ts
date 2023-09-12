@@ -33,13 +33,13 @@ export class User{
     representingCountry:string
 
     @Column()
-    classicalELo:number;
+    classicalElo:number;
 
     @Column()
     rapidElo:number;
 
     @Column()
-    bltizElo:number;
+    blitzElo:number;
 
     @Column({
         type: "enum",

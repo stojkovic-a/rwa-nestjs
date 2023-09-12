@@ -40,7 +40,7 @@ export class TournamentService {
         let canAdd: boolean = false;
         if (
             tournament.gamesType === GameType.CLASSICAL &&
-            player.classicalELo >= tournament.minElo
+            player.classicalElo >= tournament.minElo
         ) {
             canAdd = true;
         }
@@ -54,7 +54,7 @@ export class TournamentService {
 
         if (
             tournament.gamesType === GameType.BLITZ &&
-            player.bltizElo >= tournament.minElo
+            player.blitzElo >= tournament.minElo
         ) {
             canAdd = true;
         }

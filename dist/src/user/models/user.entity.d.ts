@@ -9,9 +9,9 @@ export declare class User {
     lastName: string;
     dateOfBirth: Date;
     representingCountry: string;
-    classicalELo: number;
+    classicalElo: number;
     rapidElo: number;
-    bltizElo: number;
+    blitzElo: number;
     roles: Role[];
     accountVerified: boolean;
     verificationCode: string;

@@ -54,6 +54,7 @@ __decorate([
 ], UserController.prototype, "getAllUsers", null);
 __decorate([
     (0, common_1.Get)(':id'),
+    (0, decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),

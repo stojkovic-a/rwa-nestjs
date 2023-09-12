@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Post, Body, Delete, Put, ParseIntPipe, HttpCode, HttpStatus } from '@nestjs/common';
 import { User, UserDto } from './models';
 import { UserService } from './user.service';
-import { GetUser, Roles } from '../auth/decorator';
+import { GetUser, Public, Roles } from '../auth/decorator';
 import { Role } from 'src/auth/enum';
 
 @Controller('user')
@@ -26,6 +26,7 @@ export class UserController {
 
 
     @Get(':id')
+    @Public()
     @HttpCode(HttpStatus.OK)
     public getPlayer(@Param('id', ParseIntPipe) id: number) {
         return this.userService.getPlayer(id);
