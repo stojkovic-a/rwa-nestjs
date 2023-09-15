@@ -19,14 +19,16 @@ export class MiscService {
         const playerNames = await this.userRepo
             .createQueryBuilder('user')
             .select('user.firstName, user.lastName')
+            .where(':role = ANY(user.roles)', { role: 'Player' })
             .getRawMany();
+
         const tournamentNames = await this.tournamentRepo
             .createQueryBuilder('tournament')
             .select('tournament.tournamentName')
             .getRawMany();
-        const names= playerNames.map((result) => {return `${result.firstName} ${result.lastName}`})
-        const tournaments=tournamentNames.map((result)=>result.tournamentName)
-        return {names,tournaments};
+        const names = playerNames.map((result) => { return `${result.firstName} ${result.lastName}` })
+        const tournaments = tournamentNames.map((result) => result.tournamentName)
+        return { names, tournaments };
     }
 
 }

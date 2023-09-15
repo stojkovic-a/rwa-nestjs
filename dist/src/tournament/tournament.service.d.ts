@@ -10,9 +10,11 @@ export declare class TournamentService {
     private gameRepo;
     constructor(tournamentRepo: Repository<Tournament>, userRepo: Repository<User>, gameRepo: Repository<Game>);
     getTournament(id: number): Promise<Tournament>;
-    deleteTournament(id: number): Promise<import("typeorm").DeleteResult>;
+    getNumberOfTournaments(): Promise<number>;
+    getTournamentsPagination(skip: number, take: number): Promise<Tournament[]>;
+    deleteTournament(id: number): Promise<number>;
     createTournament(dto: tournamentCreationDto): Promise<Tournament>;
-    updateTournament(id: number, dto: TournamentUpdateDto): Promise<import("typeorm").UpdateResult>;
+    updateTournament(id: number, dto: TournamentUpdateDto): Promise<number>;
     addPlayer(userId: number, tourId: number): Promise<Tournament | ForbiddenException>;
     removePlayer(userId: number, tourId: number): Promise<Tournament>;
     addGame(gameId: number, tourId: number): Promise<Tournament>;

@@ -17,20 +17,48 @@ export class UserService {
         return this.userRepo.find();
     }
 
-    public async getPlayer(id:number){
-        const user=await this.userRepo.findOneBy({id:id});
-        if(user.roles.includes(Role.Player)){
+    public async getNumberOfUsers() {
+        return await this.userRepo.count();
+    }
+
+    public async getUsersPagination(skip: number, take: number) {
+        const users = await this.userRepo.find({
+            skip: skip,
+            take: take
+        });
+        const safeUsers = users.map((user) => {
+            const { passwordHash, verificationCode, refreshTokenHash, ...rest } = user;
+            return {
+                ...rest,
+                isPlayer: rest.roles.includes(Role.Player),
+                isAdmin: rest.roles.includes(Role.Admin)
+            }
+        });
+
+        return safeUsers;
+    }
+    public async getPlayer(id: number) {
+        const user = await this.userRepo.findOneBy({ id: id });
+        if (user.roles.includes(Role.Player)) {
             return user
-        }  
+        }
         throw new NotFoundException("User not Found");
     }
 
-    public async updateUser(id:number,dto: UserDto) {
-        return await this.userRepo.update(id,dto);
+    public async updateUser(id: number, dto: UserDto) {
+        const user = {
+            ...dto,
+            roles: [Role.User, dto.isAdmin ? Role.Admin : null, dto.isPlayer ? Role.Player : null]
+        }
+        delete user.isAdmin;
+        delete user.isPlayer;
+        await this.userRepo.update(id, user);
+        return id;
     }
 
     public async deleteUser(id: number) {
-        return await this.userRepo.delete(id);
+        await this.userRepo.delete(id);
+        return id;
     }
 
 }

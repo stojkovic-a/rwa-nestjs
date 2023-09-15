@@ -12,11 +12,17 @@ const position_to_game_controller_1 = require("./position-to-game.controller");
 const position_to_game_service_1 = require("./position-to-game.service");
 const position_to_game_entity_1 = require("./models/position-to-game.entity");
 const typeorm_1 = require("@nestjs/typeorm");
+const models_1 = require("../position/models");
+const models_2 = require("../game/models");
 let PositionToGameModule = exports.PositionToGameModule = class PositionToGameModule {
 };
 exports.PositionToGameModule = PositionToGameModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([position_to_game_entity_1.PositionToGame])],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([position_to_game_entity_1.PositionToGame]),
+            typeorm_1.TypeOrmModule.forFeature([models_1.Position]),
+            typeorm_1.TypeOrmModule.forFeature([models_2.Game]),
+        ],
         controllers: [position_to_game_controller_1.PositionToGameController],
         providers: [position_to_game_service_1.PositionToGameService]
     })

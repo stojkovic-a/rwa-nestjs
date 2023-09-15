@@ -199,55 +199,58 @@ export class GameService {
     }
 
     public async createGame(dto: gameCreationDto) {
+        console.log(dto);
         const [blackPlayer, whitePlayer, tournament] = await Promise.all([
             this.userRepo.findOneBy({ id: dto.blackPlayerId }),
             this.userRepo.findOneBy({ id: dto.whitePlayerId }),
-            dto.tournamentId ? this.tournamentRepo.findOneBy({ id: dto.tournamentId }) : null,
+            !dto.tournamentId ? this.tournamentRepo.findOneBy({ id: dto.tournamentId }) : null,
         ]);
-
-        let game = await this.gameRepo.create({
-            ...dto,
-            blackPlayer: blackPlayer,
-            whitePlayer: whitePlayer,
-            gamePgn: dto.gamePGN.join(),
-            ...(tournament && { tournament: tournament })
-        });
-        game = await this.gameRepo.save(game);
-
-        if (dto.gamePGN.length != 0) {
-            const chess = new Chess();
-            chess.loadPgn(dto.gamePGN.join('\n'));
-            const moves = chess.history();
-            let chess1 = new Chess();
-
-            const positionsToGamePromises = moves.map(async (move, i) => {
-                chess1.move(moves[i]);
-                const fen = chess1.fen();
-
-                let pos = await this.positionRepo.findOneBy({ position: fen });
-                if (!pos) {
-                    const posEntity = this.positionRepo.create({
-                        position: fen
-                    });
-                    pos = (await this.positionRepo.save(posEntity));
-                }
-                let posToGame = this.posToGameRepo.create({
-                    moveNumber: i + 1,
-                    lastColorMove: i % 2 == 0 ? LastColor.WHITE : LastColor.BLACK,
-                    whiteTimeLeft: -1,
-                    blackTimeLeft: -1,
-                    position: pos,
-                    game: game
-                });
-
-                return posToGame;
-
+        console.log(tournament);
+        if (whitePlayer && blackPlayer) {
+            let game = await this.gameRepo.create({
+                ...dto,
+                blackPlayer: blackPlayer,
+                whitePlayer: whitePlayer,
+                gamePgn: dto.gamePGN.join(),
+                ...(tournament && { tournament: tournament })
             });
-            const positionsToGame = await Promise.all(positionsToGamePromises);
-            await this.posToGameRepo.save(positionsToGame);
+            game = await this.gameRepo.save(game);
 
+            if (dto.gamePGN.length != 0) {
+                const chess = new Chess();
+                chess.loadPgn(dto.gamePGN.join('\n'));
+                const moves = chess.history();
+                let chess1 = new Chess();
+
+                const positionsToGamePromises = moves.map(async (move, i) => {
+                    chess1.move(moves[i]);
+                    const fen = chess1.fen();
+
+                    let pos = await this.positionRepo.findOneBy({ position: fen });
+                    if (!pos) {
+                        const posEntity = this.positionRepo.create({
+                            position: fen
+                        });
+                        pos = (await this.positionRepo.save(posEntity));
+                    }
+                    let posToGame = this.posToGameRepo.create({
+                        moveNumber: i + 1,
+                        lastColorMove: i % 2 == 0 ? LastColor.WHITE : LastColor.BLACK,
+                        whiteTimeLeft: -1,
+                        blackTimeLeft: -1,
+                        position: pos,
+                        game: game
+                    });
+
+                    return posToGame;
+
+                });
+                const positionsToGame = await Promise.all(positionsToGamePromises);
+                await this.posToGameRepo.save(positionsToGame);
+
+            }
+            return game.id;
         }
-
     }
 
     public async updateGame(id: number, dto: gameUpdateDto) {

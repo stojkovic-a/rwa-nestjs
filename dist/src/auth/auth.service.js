@@ -32,9 +32,10 @@ let AuthService = exports.AuthService = class AuthService {
     async hashData(data) {
         return await argon.hash(data);
     }
-    async getTokens(userId, email, roles) {
+    async generateTokens(userId, firstName, email, roles) {
         const payload = {
             sub: userId,
+            firstName,
             email,
             roles
         };
@@ -89,7 +90,7 @@ let AuthService = exports.AuthService = class AuthService {
             roles: roles,
         });
         await this.userRepo.save(user);
-        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        const tokens = await this.generateTokens(user.id, user.firstName, user.email, user.roles);
         await this.updateRtHash(user.id, tokens.refresh_token);
         const emailBody = this.config.get('API_URL')
             + this.config.get('VERIFICATION_ROUTE')
@@ -139,7 +140,7 @@ let AuthService = exports.AuthService = class AuthService {
         const pwMatches = await argon.verify(user.passwordHash, dto.password);
         if (!pwMatches)
             throw new common_2.ForbiddenException('Credentials incorrect');
-        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        const tokens = await this.generateTokens(user.id, user.firstName, user.email, user.roles);
         await this.updateRtHash(user.id, tokens.refresh_token);
         return tokens;
     }
@@ -158,7 +159,7 @@ let AuthService = exports.AuthService = class AuthService {
         const rtMatches = await argon.verify(user.refreshTokenHash, rt);
         if (!rtMatches)
             throw new common_2.ForbiddenException('Acces Denied');
-        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        const tokens = await this.generateTokens(user.id, user.firstName, user.email, user.roles);
         await this.updateRtHash(user.id, tokens.refresh_token);
         return tokens;
     }

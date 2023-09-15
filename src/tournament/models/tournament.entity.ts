@@ -32,7 +32,7 @@ export class Tournament {
     gamesType: GameType
 
     @Column()
-    minElo:number;
+    minElo: number;
 
     @OneToMany(() => Game, (game) => game.tournament, {
         lazy: true
@@ -40,7 +40,8 @@ export class Tournament {
     games: Game[];
 
     @ManyToMany(() => User, (user) => user.tournamentParticipations, {
-        lazy: true
+        lazy: true,
+        onDelete: 'CASCADE'
     })
     players: User[];
 

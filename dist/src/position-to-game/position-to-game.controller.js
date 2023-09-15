@@ -25,6 +25,12 @@ let PositionToGameController = exports.PositionToGameController = class Position
     getPosToGame(id) {
         return this.posToGameService.getPosToGame(id);
     }
+    getGameByPosition(params) {
+        return this.posToGameService.getGameByPosition(params.params.position, params.params.pageNum, params.params.pageSize);
+    }
+    getNumberOfGamesByPosition(params) {
+        return this.posToGameService.getNumberOfGamesByPosition(params.params.position);
+    }
     createPosToGame(dto) {
         return this.posToGameService.createPosToGame(dto);
     }
@@ -44,6 +50,24 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], PositionToGameController.prototype, "getPosToGame", null);
+__decorate([
+    (0, common_1.Post)('position'),
+    (0, decorator_1.Public)(),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], PositionToGameController.prototype, "getGameByPosition", null);
+__decorate([
+    (0, common_1.Post)('positionNum'),
+    (0, decorator_1.Public)(),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], PositionToGameController.prototype, "getNumberOfGamesByPosition", null);
 __decorate([
     (0, common_1.Post)(),
     (0, decorator_1.Public)(),

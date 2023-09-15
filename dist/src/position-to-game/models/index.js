@@ -16,4 +16,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./position-to-game.entity"), exports);
 __exportStar(require("./position-to-game.dto"), exports);
+__exportStar(require("./game-with-position-number.interface"), exports);
 //# sourceMappingURL=index.js.map

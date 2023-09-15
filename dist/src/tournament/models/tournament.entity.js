@@ -59,7 +59,8 @@ __decorate([
 ], Tournament.prototype, "games", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => user_entity_1.User, (user) => user.tournamentParticipations, {
-        lazy: true
+        lazy: true,
+        onDelete: 'CASCADE'
     }),
     __metadata("design:type", Array)
 ], Tournament.prototype, "players", void 0);

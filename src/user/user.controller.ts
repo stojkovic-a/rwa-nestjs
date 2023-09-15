@@ -18,6 +18,22 @@ export class UserController {
         return user;
     }
 
+    @Public()//
+    @Get('numberUsers')
+    @HttpCode(HttpStatus.OK)
+    public getNumberOfUsers() {
+        return this.userService.getNumberOfUsers();
+    }
+
+    @Public()//
+    @Get('users/:skip/:take')
+    @HttpCode(HttpStatus.OK)
+    public getUsersPagination(
+        @Param('skip', ParseIntPipe) skip: number,
+        @Param('take', ParseIntPipe) take: number
+    ) {
+        return this.userService.getUsersPagination(skip, take);
+    }
     @Get()
     @Roles(Role.Admin, Role.Player)
     public async getAllUsers() {
@@ -34,7 +50,8 @@ export class UserController {
 
 
     @Put(':id')
-    @Roles(Role.Admin)
+    @Public()
+    // @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public async updateUser(
         @Param("id", ParseIntPipe) id: number,
@@ -44,7 +61,8 @@ export class UserController {
     }
 
     @Delete(':id')
-    @Roles(Role.Admin)
+    @Public()//
+    // @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public async deleteUser(@Param("id", ParseIntPipe) id: number) {
         return this.userService.deleteUser(id);

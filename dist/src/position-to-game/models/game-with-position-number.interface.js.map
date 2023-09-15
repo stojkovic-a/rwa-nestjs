@@ -1,0 +1,1 @@
+{"version":3,"file":"game-with-position-number.interface.js","sourceRoot":"","sources":["../../../../src/position-to-game/models/game-with-position-number.interface.ts"],"names":[],"mappings":";;;AAEA,MAAa,UAAU;IAKnB,YAAY,KAAqC,EAAC,SAAgB;QAC9D,IAAI,CAAC,KAAK,GAAC,KAAK,CAAC;QACjB,IAAI,CAAC,QAAQ,GAAC,SAAS,CAAC;IAC5B,CAAC;CACJ;AATD,gCASC"}

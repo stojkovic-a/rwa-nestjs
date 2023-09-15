@@ -25,6 +25,24 @@ let UserService = exports.UserService = class UserService {
     getAllUsers() {
         return this.userRepo.find();
     }
+    async getNumberOfUsers() {
+        return await this.userRepo.count();
+    }
+    async getUsersPagination(skip, take) {
+        const users = await this.userRepo.find({
+            skip: skip,
+            take: take
+        });
+        const safeUsers = users.map((user) => {
+            const { passwordHash, verificationCode, refreshTokenHash, ...rest } = user;
+            return {
+                ...rest,
+                isPlayer: rest.roles.includes(enum_1.Role.Player),
+                isAdmin: rest.roles.includes(enum_1.Role.Admin)
+            };
+        });
+        return safeUsers;
+    }
     async getPlayer(id) {
         const user = await this.userRepo.findOneBy({ id: id });
         if (user.roles.includes(enum_1.Role.Player)) {
@@ -33,10 +51,18 @@ let UserService = exports.UserService = class UserService {
         throw new common_1.NotFoundException("User not Found");
     }
     async updateUser(id, dto) {
-        return await this.userRepo.update(id, dto);
+        const user = {
+            ...dto,
+            roles: [enum_1.Role.User, dto.isAdmin ? enum_1.Role.Admin : null, dto.isPlayer ? enum_1.Role.Player : null]
+        };
+        delete user.isAdmin;
+        delete user.isPlayer;
+        await this.userRepo.update(id, user);
+        return id;
     }
     async deleteUser(id) {
-        return await this.userRepo.delete(id);
+        await this.userRepo.delete(id);
+        return id;
     }
 };
 exports.UserService = UserService = __decorate([

@@ -11,7 +11,7 @@ export declare class AuthService {
     private config;
     constructor(userRepo: Repository<User>, jwtService: JwtService, config: ConfigService);
     hashData(data: string): Promise<string>;
-    getTokens(userId: number, email: string, roles: Role[]): Promise<Tokens>;
+    generateTokens(userId: number, firstName: string, email: string, roles: Role[]): Promise<Tokens>;
     signupLocal(dto: SignupDto): Promise<Tokens>;
     sendVerificationEmail(userMail: string, link: string): Promise<void>;
     verifyEmail(code: string): Promise<void>;

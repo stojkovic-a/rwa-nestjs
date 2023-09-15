@@ -25,6 +25,12 @@ let UserController = exports.UserController = class UserController {
     getMe(user) {
         return user;
     }
+    getNumberOfUsers() {
+        return this.userService.getNumberOfUsers();
+    }
+    getUsersPagination(skip, take) {
+        return this.userService.getUsersPagination(skip, take);
+    }
     async getAllUsers() {
         return this.userService.getAllUsers();
     }
@@ -46,6 +52,24 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getMe", null);
 __decorate([
+    (0, decorator_1.Public)(),
+    (0, common_1.Get)('numberUsers'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "getNumberOfUsers", null);
+__decorate([
+    (0, decorator_1.Public)(),
+    (0, common_1.Get)('users/:skip/:take'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('skip', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('take', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "getUsersPagination", null);
+__decorate([
     (0, common_1.Get)(),
     (0, decorator_1.Roles)(enum_1.Role.Admin, enum_1.Role.Player),
     __metadata("design:type", Function),
@@ -63,7 +87,7 @@ __decorate([
 ], UserController.prototype, "getPlayer", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    (0, decorator_1.Roles)(enum_1.Role.Admin),
+    (0, decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
@@ -73,7 +97,7 @@ __decorate([
 ], UserController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, decorator_1.Roles)(enum_1.Role.Admin),
+    (0, decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __metadata("design:type", Function),

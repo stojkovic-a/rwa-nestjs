@@ -4,9 +4,11 @@ export declare class TournamentController {
     private tournamentService;
     constructor(tournamentService: TournamentService);
     getTournament(id: number): Promise<import("./models").Tournament>;
+    getNumberOfTournaments(): Promise<number>;
+    getTournamentsPagination(skip: number, take: number): Promise<import("./models").Tournament[]>;
     createTournament(dto: tournamentCreationDto): Promise<import("./models").Tournament>;
-    updateTournament(id: number, dto: TournamentUpdateDto): Promise<import("typeorm").UpdateResult>;
-    deleteTournament(id: number): Promise<import("typeorm").DeleteResult>;
+    updateTournament(id: number, dto: TournamentUpdateDto): Promise<number>;
+    deleteTournament(id: number): Promise<number>;
     addPlayer(userId: number, tourId: number): Promise<import("./models").Tournament | import("@nestjs/common").ForbiddenException>;
     removePlayer(userId: number, tourId: number): Promise<import("./models").Tournament>;
     addSelf(tournamentId: number, userId: number): Promise<import("./models").Tournament | import("@nestjs/common").ForbiddenException>;

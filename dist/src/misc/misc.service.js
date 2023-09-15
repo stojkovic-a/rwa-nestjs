@@ -27,6 +27,7 @@ let MiscService = exports.MiscService = class MiscService {
         const playerNames = await this.userRepo
             .createQueryBuilder('user')
             .select('user.firstName, user.lastName')
+            .where(':role = ANY(user.roles)', { role: 'Player' })
             .getRawMany();
         const tournamentNames = await this.tournamentRepo
             .createQueryBuilder('tournament')

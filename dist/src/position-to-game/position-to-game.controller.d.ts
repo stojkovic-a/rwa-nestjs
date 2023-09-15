@@ -4,6 +4,8 @@ export declare class PositionToGameController {
     private posToGameService;
     constructor(posToGameService: PositionToGameService);
     getPosToGame(id: number): Promise<import("./models").PositionToGame>;
+    getGameByPosition(params: any): Promise<import("./models").GamePosNum[]>;
+    getNumberOfGamesByPosition(params: any): Promise<number | any[]>;
     createPosToGame(dto: posToGameCreateionDto): Promise<import("./models").PositionToGame>;
     updatePosToGame(id: number, dto: posToGameUpdateDto): Promise<import("typeorm").UpdateResult>;
     deletePosToGame(id: number): Promise<import("typeorm").DeleteResult>;

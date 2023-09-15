@@ -7,7 +7,7 @@ export declare class GameController {
     getGamesPaging(skip: number, take: number, params: any): Promise<import("./models").GamePlayerTournamentPositionDto[]>;
     getNumberOfGames(): Promise<number>;
     getPositionsFromGame(id: number): Promise<import("./models").GamePlayerTournamentPositionDto>;
-    createGame(dto: gameCreationDto): Promise<void>;
+    createGame(dto: gameCreationDto): Promise<number>;
     updateGame(id: number, dto: gameUpdateDto): Promise<void>;
     deleteGame(id: number): Promise<import("typeorm").DeleteResult>;
 }

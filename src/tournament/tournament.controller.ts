@@ -16,6 +16,23 @@ export class TournamentController {
         return this.tournamentService.getTournament(id);
     }
 
+    @Public()
+    @Get('tournaments/numberOf')
+    @HttpCode(HttpStatus.OK)
+    public getNumberOfTournaments() {
+        return this.tournamentService.getNumberOfTournaments();
+    }
+
+    @Public()
+    @Get('pagination/:skip/:take')
+    @HttpCode(HttpStatus.OK)
+    public getTournamentsPagination(
+        @Param('skip', ParseIntPipe) skip: number,
+        @Param('take', ParseIntPipe) take: number
+    ) {
+        return this.tournamentService.getTournamentsPagination(skip, take);
+    }
+
     @Post()
     @Public()//
     // @Roles(Role.Admin)
@@ -96,7 +113,7 @@ export class TournamentController {
         return this.tournamentService.addGame(gameId, tourId);
     }
 
-    @Put("removePlayer/:gameId/:tourId")
+    @Put("removeGame/:gameId/:tourId")
     @Public()//
     // @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)

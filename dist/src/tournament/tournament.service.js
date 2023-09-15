@@ -28,15 +28,27 @@ let TournamentService = exports.TournamentService = class TournamentService {
     async getTournament(id) {
         return await this.tournamentRepo.findOneBy({ id: id });
     }
+    async getNumberOfTournaments() {
+        const num = await this.tournamentRepo.count();
+        return num;
+    }
+    async getTournamentsPagination(skip, take) {
+        return await this.tournamentRepo.find({
+            skip: skip,
+            take: take
+        });
+    }
     async deleteTournament(id) {
-        return await this.tournamentRepo.delete(id);
+        await this.tournamentRepo.delete(id);
+        return id;
     }
     async createTournament(dto) {
         const tournament = await this.tournamentRepo.create(dto);
         return await this.tournamentRepo.save(tournament);
     }
     async updateTournament(id, dto) {
-        return await this.tournamentRepo.update(id, dto);
+        await this.tournamentRepo.update(id, dto);
+        return id;
     }
     async addPlayer(userId, tourId) {
         const player = await this.userRepo.findOneBy({ id: userId });

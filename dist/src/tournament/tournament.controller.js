@@ -25,6 +25,12 @@ let TournamentController = exports.TournamentController = class TournamentContro
     getTournament(id) {
         return this.tournamentService.getTournament(id);
     }
+    getNumberOfTournaments() {
+        return this.tournamentService.getNumberOfTournaments();
+    }
+    getTournamentsPagination(skip, take) {
+        return this.tournamentService.getTournamentsPagination(skip, take);
+    }
     createTournament(dto) {
         return this.tournamentService.createTournament(dto);
     }
@@ -61,6 +67,24 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], TournamentController.prototype, "getTournament", null);
+__decorate([
+    (0, decorator_1.Public)(),
+    (0, common_1.Get)('tournaments/numberOf'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], TournamentController.prototype, "getNumberOfTournaments", null);
+__decorate([
+    (0, decorator_1.Public)(),
+    (0, common_1.Get)('pagination/:skip/:take'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('skip', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('take', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", void 0)
+], TournamentController.prototype, "getTournamentsPagination", null);
 __decorate([
     (0, common_1.Post)(),
     (0, decorator_1.Public)(),
@@ -140,7 +164,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TournamentController.prototype, "addGame", null);
 __decorate([
-    (0, common_1.Put)("removePlayer/:gameId/:tourId"),
+    (0, common_1.Put)("removeGame/:gameId/:tourId"),
     (0, decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('gameId', common_1.ParseIntPipe)),

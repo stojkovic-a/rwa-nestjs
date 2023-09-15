@@ -97,13 +97,15 @@ export class AuthService {
         return await argon.hash(data);
     }
 
-    async getTokens(
+    async generateTokens(
         userId: number,
+        firstName: string,
         email: string,
         roles: Role[],
     ): Promise<Tokens> {
         const payload = {
             sub: userId,
+            firstName,
             email,
             roles
         }
@@ -162,7 +164,7 @@ export class AuthService {
         })
         await this.userRepo.save(user);
 
-        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        const tokens = await this.generateTokens(user.id, user.firstName, user.email, user.roles);
         await this.updateRtHash(user.id, tokens.refresh_token);
 
         const emailBody =
@@ -225,7 +227,7 @@ export class AuthService {
         if (!pwMatches)
             throw new ForbiddenException('Credentials incorrect');
 
-        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        const tokens = await this.generateTokens(user.id, user.firstName, user.email, user.roles);
         await this.updateRtHash(user.id, tokens.refresh_token);
 
         return tokens;
@@ -250,7 +252,7 @@ export class AuthService {
         if (!rtMatches)
             throw new ForbiddenException('Acces Denied');
 
-        const tokens = await this.getTokens(user.id, user.email, user.roles);
+        const tokens = await this.generateTokens(user.id, user.firstName, user.email, user.roles);
         await this.updateRtHash(user.id, tokens.refresh_token);
 
         return tokens;

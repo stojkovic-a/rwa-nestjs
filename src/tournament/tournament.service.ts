@@ -21,8 +21,21 @@ export class TournamentService {
         return await this.tournamentRepo.findOneBy({ id: id });
     }
 
+    public async getNumberOfTournaments() {
+        const num = await this.tournamentRepo.count();
+        return num;
+    }
+
+    public async getTournamentsPagination(skip: number, take: number) {
+        return await this.tournamentRepo.find({
+            skip: skip,
+            take: take
+        });
+    }
+
     public async deleteTournament(id: number) {
-        return await this.tournamentRepo.delete(id);
+        await this.tournamentRepo.delete(id);
+        return id;
     }
 
     public async createTournament(dto: tournamentCreationDto) {
@@ -31,7 +44,8 @@ export class TournamentService {
     }
 
     public async updateTournament(id: number, dto: TournamentUpdateDto) {
-        return await this.tournamentRepo.update(id, dto);
+        await this.tournamentRepo.update(id, dto);
+        return id;
     }
 
     public async addPlayer(userId: number, tourId: number) {

@@ -17,6 +17,29 @@ export class PositionToGameController {
         return this.posToGameService.getPosToGame(id);
     }
 
+    @Post('position')
+    @Public()//
+    @HttpCode(HttpStatus.OK)
+    public getGameByPosition(
+        @Body() params,
+    ) {
+        return this.posToGameService.getGameByPosition(
+            params.params.position,
+            params.params.pageNum,
+            params.params.pageSize
+        );
+    }
+
+    @Post('positionNum')
+    @Public()//
+    @HttpCode(HttpStatus.OK)
+    public getNumberOfGamesByPosition(
+        @Body() params,
+    ) {
+        return this.posToGameService.getNumberOfGamesByPosition(
+            params.params.position
+        );
+    }
     @Post()
     @Public()//
     // @Roles(Role.Admin)
