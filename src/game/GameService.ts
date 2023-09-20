@@ -27,38 +27,7 @@ export class GameService {
         return await this.gameRepo.findOneBy({ id: id });
     }
 
-    // public async getGamesPaging(
-    //     skip: number,
-    //     take: number,
-    //     params,
-    // ): Promise<GamePlayerTournamentPositionDto[]> {
-    //     console.log(params);
-    //     const games = await this.gameRepo.find({
-    //         skip: skip,
-    //         take: take,
-    //         order: { gameDate: "DESC" }
-    //     });
-    //     const gamePlayers: GamePlayerTournamentPositionDto[] = [];
-    //     for (let game of games) {
-    //         let blackPlayer = await game.blackPlayer;
-    //         let whitePlayer = await game.whitePlayer;
-    //         let tournament = await game.tournament;
-    //         let posToGame = await game.positionToGame;
-    //         const gamePlayer: GamePlayerTournamentPositionDto = new GamePlayerTournamentPositionDto();
-    //         gamePlayer.id = game.id;
-    //         gamePlayer.whitePlayer = whitePlayer;
-    //         gamePlayer.blackPlayer = blackPlayer;
-    //         gamePlayer.gameDate = game.gameDate;
-    //         gamePlayer.winnerId = game.winnerId;
-    //         gamePlayer.startingTime = game.startingTime;
-    //         gamePlayer.increment = game.increment;
-    //         gamePlayer.tournament = tournament;
-    //         gamePlayer.positionToGame = posToGame;
-    //         gamePlayer.gamePgn = game.gamePgn;
-    //         gamePlayers.push(gamePlayer);
-    //     }
-    //     return gamePlayers;
-    // }
+
     public async getGamesPaging(
         skip: number,
         take: number,
@@ -179,6 +148,13 @@ export class GameService {
             let whitePlayer = await game.whitePlayer;
             let tournament = await game.tournament;
             let posToGame = await game.positionToGame;
+            delete whitePlayer.passwordHash;
+            delete whitePlayer.refreshTokenHash;
+            delete whitePlayer.verificationCode;
+            delete blackPlayer.passwordHash;
+            delete blackPlayer.refreshTokenHash;
+            delete blackPlayer.verificationCode;
+            
             const gamePlayer: GamePlayerTournamentPositionDto = new GamePlayerTournamentPositionDto();
             gamePlayer.id = game.id;
             gamePlayer.whitePlayer = whitePlayer;
@@ -194,18 +170,42 @@ export class GameService {
         }
         return gamePlayers;
     }
+
     public async getNumberOfGames() {
         return await this.gameRepo.count();
     }
 
+    public async getGameTournamentPagination(skip: number, take: number) {
+        const games = await this.gameRepo.find({
+            skip: skip,
+            take: take,
+        });
+
+        const gameTournamentMappings = await Promise.all(
+            games.map(async (game) => {
+                const tournament = await game.tournament;
+                if (!tournament) {
+                    return null;
+                } else {
+                    return {
+                        gameId: game.id,
+                        tournamentId: tournament.id,
+                    };
+                }
+            })
+        );
+
+        const filteredMappings = gameTournamentMappings.filter((mapping) => mapping !== null);
+
+        return filteredMappings;
+
+    }
     public async createGame(dto: gameCreationDto) {
-        console.log(dto);
         const [blackPlayer, whitePlayer, tournament] = await Promise.all([
             this.userRepo.findOneBy({ id: dto.blackPlayerId }),
             this.userRepo.findOneBy({ id: dto.whitePlayerId }),
             !dto.tournamentId ? this.tournamentRepo.findOneBy({ id: dto.tournamentId }) : null,
         ]);
-        console.log(tournament);
         if (whitePlayer && blackPlayer) {
             let game = await this.gameRepo.create({
                 ...dto,

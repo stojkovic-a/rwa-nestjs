@@ -4,80 +4,82 @@ import { Tournament } from "src/tournament/models/tournament.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity()
-export class User{
+export class User {
     @PrimaryGeneratedColumn()
-    id:number;
+    id: number;
 
     @Column({
-        unique:true
+        unique: true
     })
-    email:string;
+    email: string;
 
     @Column()
-    passwordHash:string;
+    passwordHash: string;
 
     @Column()
-    firstName:string;
+    firstName: string;
 
     @Column()
-    lastName:string;
+    lastName: string;
 
     @Column({
-        nullable:true
+        nullable: true
     })
-    dateOfBirth:Date;
+    dateOfBirth: Date;
 
     @Column({
-        default:"FIDE"
+        default: "FIDE"
     })
-    representingCountry:string
+    representingCountry: string
 
     @Column()
-    classicalElo:number;
+    classicalElo: number;
 
     @Column()
-    rapidElo:number;
+    rapidElo: number;
 
     @Column()
-    blitzElo:number;
+    blitzElo: number;
 
     @Column({
         type: "enum",
         enum: Role,
-        default:[Role.User],
-        array:true
+        default: [Role.User],
+        array: true
     })
-    roles:Role[]
+    roles: Role[]
 
     @Column({
-        default:false
+        default: false
     })
-    accountVerified:boolean;
+    accountVerified: boolean;
 
     @Column()
-    verificationCode:string;
+    verificationCode: string;
 
     @Column()
-    registrationDateTime:Date;
+    registrationDateTime: Date;
 
     @Column({
-        nullable:true
+        nullable: true
     })
-    refreshTokenHash:string;
+    refreshTokenHash: string;
 
-    @ManyToMany(()=>Tournament,(tournament)=>tournament.players,{
-        lazy:true
+    @ManyToMany(() => Tournament, (tournament) => tournament.players, {
+        lazy: true
     })
     @JoinTable()
-    tournamentParticipations:Tournament[];
+    tournamentParticipations: Tournament[];
 
-    @OneToMany(()=>Game,(game)=>game.whitePlayer,{
-        lazy:true
+    @OneToMany(() => Game, (game) => game.whitePlayer, {
+        lazy: true,
+        onDelete: 'CASCADE'
     })
-    whiteGames:Game[];
+    whiteGames: Game[];
 
-    @OneToMany(()=>Game,(game)=>game.blackPlayer,{
-        lazy:true
+    @OneToMany(() => Game, (game) => game.blackPlayer, {
+        lazy: true,
+        onDelete: 'CASCADE'
     })
-    blackGames:Game[];
+    blackGames: Game[];
 }

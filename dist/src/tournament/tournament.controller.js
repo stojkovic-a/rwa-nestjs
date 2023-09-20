@@ -68,7 +68,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TournamentController.prototype, "getTournament", null);
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Get)('tournaments/numberOf'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __metadata("design:type", Function),
@@ -76,7 +75,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TournamentController.prototype, "getNumberOfTournaments", null);
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Get)('pagination/:skip/:take'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('skip', common_1.ParseIntPipe)),
@@ -87,7 +85,7 @@ __decorate([
 ], TournamentController.prototype, "getTournamentsPagination", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -106,7 +104,7 @@ __decorate([
 ], TournamentController.prototype, "updateTournament", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -115,7 +113,7 @@ __decorate([
 ], TournamentController.prototype, "deleteTournament", null);
 __decorate([
     (0, common_1.Put)("addPlayer/:userId/:tourId"),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('userId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Param)('tourId', common_1.ParseIntPipe)),
@@ -125,7 +123,7 @@ __decorate([
 ], TournamentController.prototype, "addPlayer", null);
 __decorate([
     (0, common_1.Put)("removePlayer/:userId/:tourId"),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('userId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Param)('tourId', common_1.ParseIntPipe)),
@@ -155,7 +153,7 @@ __decorate([
 ], TournamentController.prototype, "removeSelf", null);
 __decorate([
     (0, common_1.Put)("addGame/:gameId/:tourId"),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('gameId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Param)('tourId', common_1.ParseIntPipe)),
@@ -165,7 +163,7 @@ __decorate([
 ], TournamentController.prototype, "addGame", null);
 __decorate([
     (0, common_1.Put)("removeGame/:gameId/:tourId"),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('gameId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Param)('tourId', common_1.ParseIntPipe)),

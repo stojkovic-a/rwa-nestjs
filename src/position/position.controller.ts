@@ -8,7 +8,6 @@ export class PositionController {
     constructor(private positionService: PositionService) {
 
     }
-    // @Public()
     @Get(":id")
     @HttpCode(HttpStatus.OK)
     public getPosition(@Param('id', ParseIntPipe) id: number) {

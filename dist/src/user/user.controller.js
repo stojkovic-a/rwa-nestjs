@@ -37,6 +37,12 @@ let UserController = exports.UserController = class UserController {
     getPlayer(id) {
         return this.userService.getPlayer(id);
     }
+    getParticipationsPagination(skip, take) {
+        return this.userService.getParticipationsPagination(skip, take);
+    }
+    countParticipations() {
+        return this.userService.countParticipations();
+    }
     async updateUser(id, dto) {
         return this.userService.updateUser(id, dto);
     }
@@ -52,7 +58,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getMe", null);
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Get)('numberUsers'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __metadata("design:type", Function),
@@ -60,7 +65,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getNumberOfUsers", null);
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Get)('users/:skip/:take'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('skip', common_1.ParseIntPipe)),
@@ -71,14 +75,13 @@ __decorate([
 ], UserController.prototype, "getUsersPagination", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, decorator_1.Roles)(enum_1.Role.Admin, enum_1.Role.Player),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getAllUsers", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -86,8 +89,24 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getPlayer", null);
 __decorate([
+    (0, common_1.Get)('participation/users/tournaments/:skip/:take'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('skip', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('take', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "getParticipationsPagination", null);
+__decorate([
+    (0, common_1.Get)('participation/count'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "countParticipations", null);
+__decorate([
     (0, common_1.Put)(':id'),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
@@ -97,7 +116,7 @@ __decorate([
 ], UserController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __metadata("design:type", Function),

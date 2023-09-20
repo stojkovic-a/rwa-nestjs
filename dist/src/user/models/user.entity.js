@@ -100,13 +100,15 @@ __decorate([
 ], User.prototype, "tournamentParticipations", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.whitePlayer, {
-        lazy: true
+        lazy: true,
+        onDelete: 'CASCADE'
     }),
     __metadata("design:type", Array)
 ], User.prototype, "whiteGames", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.blackPlayer, {
-        lazy: true
+        lazy: true,
+        onDelete: 'CASCADE'
     }),
     __metadata("design:type", Array)
 ], User.prototype, "blackGames", void 0);

@@ -26,8 +26,11 @@ export class MiscService {
             .createQueryBuilder('tournament')
             .select('tournament.tournamentName')
             .getRawMany();
+
         const names = playerNames.map((result) => { return `${result.firstName} ${result.lastName}` })
-        const tournaments = tournamentNames.map((result) => result.tournamentName)
+        const tournaments = tournamentNames.map((result) => {
+            return result.tournament_tournamentName;
+        })
         return { names, tournaments };
     }
 

@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MiscController = void 0;
 const common_1 = require("@nestjs/common");
 const misc_service_1 = require("./misc.service");
-const decorator_1 = require("../auth/decorator");
 let MiscController = exports.MiscController = class MiscController {
     constructor(miscService) {
         this.miscService = miscService;
@@ -22,7 +21,6 @@ let MiscController = exports.MiscController = class MiscController {
     }
 };
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Get)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __metadata("design:type", Function),

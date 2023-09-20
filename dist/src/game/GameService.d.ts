@@ -15,6 +15,10 @@ export declare class GameService {
     getGame(id: number): Promise<Game>;
     getGamesPaging(skip: number, take: number, params: any): Promise<GamePlayerTournamentPositionDto[]>;
     getNumberOfGames(): Promise<number>;
+    getGameTournamentPagination(skip: number, take: number): Promise<{
+        gameId: number;
+        tournamentId: number;
+    }[]>;
     createGame(dto: gameCreationDto): Promise<number>;
     updateGame(id: number, dto: gameUpdateDto): Promise<void>;
     deleteGame(id: number): Promise<import("typeorm").DeleteResult>;

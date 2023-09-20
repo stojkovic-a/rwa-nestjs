@@ -16,14 +16,12 @@ export class TournamentController {
         return this.tournamentService.getTournament(id);
     }
 
-    @Public()
     @Get('tournaments/numberOf')
     @HttpCode(HttpStatus.OK)
     public getNumberOfTournaments() {
         return this.tournamentService.getNumberOfTournaments();
     }
 
-    @Public()
     @Get('pagination/:skip/:take')
     @HttpCode(HttpStatus.OK)
     public getTournamentsPagination(
@@ -34,8 +32,7 @@ export class TournamentController {
     }
 
     @Post()
-    @Public()//
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.CREATED)
     public createTournament(@Body() dto: tournamentCreationDto) {
         return this.tournamentService.createTournament(dto);
@@ -52,16 +49,14 @@ export class TournamentController {
     }
 
     @Delete(':id')
-    @Public()//
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public deleteTournament(@Param('id', ParseIntPipe) id: number) {
         return this.tournamentService.deleteTournament(id);
     }
 
     @Put("addPlayer/:userId/:tourId")
-    @Public()//
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public addPlayer(
         @Param('userId', ParseIntPipe) userId: number,
@@ -71,8 +66,7 @@ export class TournamentController {
     }
 
     @Put("removePlayer/:userId/:tourId")
-    @Public()//
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public removePlayer(
         @Param('userId', ParseIntPipe) userId: number,
@@ -103,8 +97,7 @@ export class TournamentController {
 
 
     @Put("addGame/:gameId/:tourId")
-    @Public()//
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public addGame(
         @Param('gameId', ParseIntPipe) gameId: number,
@@ -114,8 +107,7 @@ export class TournamentController {
     }
 
     @Put("removeGame/:gameId/:tourId")
-    @Public()//
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public removeGame(
         @Param('gameId', ParseIntPipe) gameId: number,

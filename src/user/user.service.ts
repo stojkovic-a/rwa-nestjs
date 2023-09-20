@@ -37,12 +37,63 @@ export class UserService {
 
         return safeUsers;
     }
+
     public async getPlayer(id: number) {
         const user = await this.userRepo.findOneBy({ id: id });
         if (user.roles.includes(Role.Player)) {
             return user
         }
         throw new NotFoundException("User not Found");
+    }
+
+    public async getParticipationsPagination(skip: number, take: number) {
+        const usersParticipation = await this.userRepo.find({
+            relations: {
+                tournamentParticipations: true,
+            },
+        });
+
+        const result = await Promise.all(
+            usersParticipation.map(async (user) => {
+                const participations = await user.tournamentParticipations;
+                if (participations.length !== 0) {
+                    return participations.map((particip) => ({
+                        userId: user.id,
+                        tournamentId: particip.id,
+                    }));
+                }
+                return [];
+            })
+        );
+
+        const flattenedResult = result.flat().slice(skip, skip + take);
+
+        return flattenedResult;
+    }
+
+    public async countParticipations() {
+        const usersParticipation = await this.userRepo.find({
+            relations: {
+                tournamentParticipations: true,
+            },
+        });
+
+        const result = await Promise.all(
+            usersParticipation.map(async (user) => {
+                const participations = await user.tournamentParticipations;
+                if (participations.length !== 0) {
+                    return participations.map((particip) => ({
+                        playerId: user.id,
+                        tournamentId: particip.id,
+                    }));
+                }
+                return [];
+            })
+        );
+
+        const flattenedResult = result.flat();
+
+        return flattenedResult.length;
     }
 
     public async updateUser(id: number, dto: UserDto) {

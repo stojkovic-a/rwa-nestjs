@@ -27,6 +27,11 @@ export declare class UserService {
         blackGames: import("../game/models").Game[];
     }[]>;
     getPlayer(id: number): Promise<User>;
+    getParticipationsPagination(skip: number, take: number): Promise<{
+        userId: number;
+        tournamentId: number;
+    }[]>;
+    countParticipations(): Promise<number>;
     updateUser(id: number, dto: UserDto): Promise<number>;
     deleteUser(id: number): Promise<number>;
 }

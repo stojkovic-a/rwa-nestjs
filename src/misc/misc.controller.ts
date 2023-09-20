@@ -8,7 +8,6 @@ constructor(private miscService:MiscService){
 
 }
 
-@Public()
 @Get()
 @HttpCode(HttpStatus.OK)
 getFilters(){

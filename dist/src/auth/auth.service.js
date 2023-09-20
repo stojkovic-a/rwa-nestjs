@@ -100,8 +100,6 @@ let AuthService = exports.AuthService = class AuthService {
     }
     async sendVerificationEmail(userMail, link) {
         const nodemailer = require('nodemailer');
-        console.log(this.config.get("NODEMAILER_HOST"));
-        console.log(this.config.get("NODEMAILER_PORT"));
         const transporter = nodemailer.createTransport({
             host: this.config.get('NODEMAILER_HOST'),
             port: this.config.get('NODEMAILER_PORT'),

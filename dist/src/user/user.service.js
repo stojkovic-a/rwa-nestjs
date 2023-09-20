@@ -50,6 +50,44 @@ let UserService = exports.UserService = class UserService {
         }
         throw new common_1.NotFoundException("User not Found");
     }
+    async getParticipationsPagination(skip, take) {
+        const usersParticipation = await this.userRepo.find({
+            relations: {
+                tournamentParticipations: true,
+            },
+        });
+        const result = await Promise.all(usersParticipation.map(async (user) => {
+            const participations = await user.tournamentParticipations;
+            if (participations.length !== 0) {
+                return participations.map((particip) => ({
+                    userId: user.id,
+                    tournamentId: particip.id,
+                }));
+            }
+            return [];
+        }));
+        const flattenedResult = result.flat().slice(skip, skip + take);
+        return flattenedResult;
+    }
+    async countParticipations() {
+        const usersParticipation = await this.userRepo.find({
+            relations: {
+                tournamentParticipations: true,
+            },
+        });
+        const result = await Promise.all(usersParticipation.map(async (user) => {
+            const participations = await user.tournamentParticipations;
+            if (participations.length !== 0) {
+                return participations.map((particip) => ({
+                    playerId: user.id,
+                    tournamentId: particip.id,
+                }));
+            }
+            return [];
+        }));
+        const flattenedResult = result.flat();
+        return flattenedResult.length;
+    }
     async updateUser(id, dto) {
         const user = {
             ...dto,

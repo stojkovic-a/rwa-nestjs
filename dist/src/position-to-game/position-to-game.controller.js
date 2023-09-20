@@ -43,7 +43,6 @@ let PositionToGameController = exports.PositionToGameController = class Position
 };
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -52,7 +51,6 @@ __decorate([
 ], PositionToGameController.prototype, "getPosToGame", null);
 __decorate([
     (0, common_1.Post)('position'),
-    (0, decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -61,7 +59,6 @@ __decorate([
 ], PositionToGameController.prototype, "getGameByPosition", null);
 __decorate([
     (0, common_1.Post)('positionNum'),
-    (0, decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -70,7 +67,7 @@ __decorate([
 ], PositionToGameController.prototype, "getNumberOfGamesByPosition", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -79,7 +76,6 @@ __decorate([
 ], PositionToGameController.prototype, "createPosToGame", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    (0, decorator_1.Public)(),
     (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
@@ -90,7 +86,6 @@ __decorate([
 ], PositionToGameController.prototype, "updatePosToGame", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, decorator_1.Public)(),
     (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),

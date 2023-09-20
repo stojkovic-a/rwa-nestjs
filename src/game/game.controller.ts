@@ -9,14 +9,12 @@ export class GameController {
     constructor(private gameService: GameService) {
     }
 
-    @Public()//
     @Get(':id')
     @HttpCode(HttpStatus.OK)
     public getGame(@Param('id', ParseIntPipe) id: number) {
         return this.gameService.getGame(id);
     }
 
-    @Public()//
     @Post('/pageFilter/:skip/:take')
     @HttpCode(HttpStatus.OK)
     public getGamesPaging(
@@ -32,14 +30,12 @@ export class GameController {
         );
     }
 
-    @Public()//
     @Get('/number/count')
     @HttpCode(HttpStatus.OK)
     public getNumberOfGames() {
         return this.gameService.getNumberOfGames();
     }
 
-    @Public()//
     @Get('/positions/:id')
     @HttpCode(HttpStatus.OK)
     public getPositionsFromGame(
@@ -48,9 +44,17 @@ export class GameController {
         return this.gameService.getPositionsFromGame(id);
     }
 
+    @Get('/tournamentJoin/:skip/:take')
+    @HttpCode(HttpStatus.OK)
+    public getGameTournamentPagination(
+        @Param('skip', ParseIntPipe) skip: number,
+        @Param('take', ParseIntPipe) take: number,
+    ) {
+        return this.gameService.getGameTournamentPagination(skip, take);
+    }
+
     @Post()
-    @Public()//
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.CREATED)
     public createGame(@Body() dto: gameCreationDto) {
         return this.gameService.createGame(dto);
@@ -64,9 +68,8 @@ export class GameController {
         return this.gameService.updateGame(id, dto);
     }
 
-    @Public()//
     @Delete(':id')
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public deleteGame(@Param('id', ParseIntPipe) id: number) {
         return this.gameService.deleteGame(id);

@@ -23,76 +23,6 @@ export class AuthService {
 
     }
 
-    // async signin(dto: SigninDto) {
-    //     const user: User | null = await this.userRepo.findOneBy({ email: dto.email });
-    //     if (!user)
-    //         throw new ForbiddenException('Credentials incorrect');
-
-    //     if (!user.accountVerified)
-    //         throw new ForbiddenException('Verify the account first');
-
-    //     const pwMatches = await argon.verify(user.passwordHash, dto.password);
-    //     if (!pwMatches)
-    //         throw new ForbiddenException('Credentials incorrect');
-
-
-    //     return this.signToken(user.id, user.email, user.roles);
-    // }
-
-    // async signup(dto: SignupDto) {
-    //     const hash = await argon.hash(dto.password);
-    //     const verificatioCode = generateSecureRandomString(128);
-    //     const roles: Role[] = [Role.User];
-    //     if (dto.isPlayer)
-    //         roles.push(Role.Player)
-    //     try {
-    //         const user = this.userRepo.create({
-    //             email: dto.email,
-    //             passwordHash: hash,
-    //             firstName: dto.firstName,
-    //             lastName: dto.lastName,
-    //             dateOfBirth: dto.dateOfBirth,
-    //             representingCountry: dto.representingCountry,
-    //             classicalELo: dto.classicalElo,
-    //             rapidElo: dto.rapidElo,
-    //             bltizElo: dto.blitzElo,
-    //             accountVerified: false,
-    //             verificationCode: verificatioCode,
-    //             registrationDateTime: new Date(Date.now()),
-    //             roles: roles,
-    //         })
-    //         await this.userRepo.save(user);
-    //         return HttpCode(200);
-
-    //     }
-    //     catch (e) {
-    //         throw new Error(e);
-    //     }
-
-    // }
-
-    // async signToken(
-    //     userId: number,
-    //     email: string,
-    //     roles: Role[],
-    // ): Promise<{ access_token: string }> {
-    //     const payload = {
-    //         sub: userId,
-    //         email,
-    //         roles,
-    //     }
-
-    //     const secret = this.config.get('JWT_SIGNIN_SECRET');
-
-    //     const token = await this.jwtService.signAsync(payload,
-    //         {
-    //             expiresIn: '15m',
-    //             secret: secret,
-    //         });
-    //     return {
-    //         access_token: token
-    //     }
-    // }
     async hashData(data: string) {
         return await argon.hash(data);
     }
@@ -178,8 +108,6 @@ export class AuthService {
 
     async sendVerificationEmail(userMail: string, link: string) {
         const nodemailer = require('nodemailer');
-        console.log(this.config.get("NODEMAILER_HOST"));
-        console.log(this.config.get("NODEMAILER_PORT"));
 
         const transporter: nodemailer.Transporter = nodemailer.createTransport({
             host: this.config.get('NODEMAILER_HOST'),

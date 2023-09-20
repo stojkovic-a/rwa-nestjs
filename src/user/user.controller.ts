@@ -18,14 +18,12 @@ export class UserController {
         return user;
     }
 
-    @Public()//
     @Get('numberUsers')
     @HttpCode(HttpStatus.OK)
     public getNumberOfUsers() {
         return this.userService.getNumberOfUsers();
     }
 
-    @Public()//
     @Get('users/:skip/:take')
     @HttpCode(HttpStatus.OK)
     public getUsersPagination(
@@ -34,24 +32,36 @@ export class UserController {
     ) {
         return this.userService.getUsersPagination(skip, take);
     }
+
     @Get()
-    @Roles(Role.Admin, Role.Player)
+    @Roles(Role.Admin)
     public async getAllUsers() {
         return this.userService.getAllUsers();
     }
 
 
     @Get(':id')
-    @Public()
     @HttpCode(HttpStatus.OK)
     public getPlayer(@Param('id', ParseIntPipe) id: number) {
         return this.userService.getPlayer(id);
     }
 
+    @Get('participation/users/tournaments/:skip/:take')
+    @HttpCode(HttpStatus.OK)
+    public getParticipationsPagination(
+        @Param('skip', ParseIntPipe) skip: number,
+        @Param('take', ParseIntPipe) take: number
+    ) {
+        return this.userService.getParticipationsPagination(skip, take);
+    }
 
+    @Get('participation/count')
+    @HttpCode(HttpStatus.OK)
+    public countParticipations() {
+        return this.userService.countParticipations();
+    }
     @Put(':id')
-    @Public()
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public async updateUser(
         @Param("id", ParseIntPipe) id: number,
@@ -61,8 +71,7 @@ export class UserController {
     }
 
     @Delete(':id')
-    @Public()//
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public async deleteUser(@Param("id", ParseIntPipe) id: number) {
         return this.userService.deleteUser(id);

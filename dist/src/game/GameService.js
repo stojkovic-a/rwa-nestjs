@@ -139,6 +139,12 @@ let GameService = exports.GameService = class GameService {
             let whitePlayer = await game.whitePlayer;
             let tournament = await game.tournament;
             let posToGame = await game.positionToGame;
+            delete whitePlayer.passwordHash;
+            delete whitePlayer.refreshTokenHash;
+            delete whitePlayer.verificationCode;
+            delete blackPlayer.passwordHash;
+            delete blackPlayer.refreshTokenHash;
+            delete blackPlayer.verificationCode;
             const gamePlayer = new models_1.GamePlayerTournamentPositionDto();
             gamePlayer.id = game.id;
             gamePlayer.whitePlayer = whitePlayer;
@@ -157,14 +163,32 @@ let GameService = exports.GameService = class GameService {
     async getNumberOfGames() {
         return await this.gameRepo.count();
     }
+    async getGameTournamentPagination(skip, take) {
+        const games = await this.gameRepo.find({
+            skip: skip,
+            take: take,
+        });
+        const gameTournamentMappings = await Promise.all(games.map(async (game) => {
+            const tournament = await game.tournament;
+            if (!tournament) {
+                return null;
+            }
+            else {
+                return {
+                    gameId: game.id,
+                    tournamentId: tournament.id,
+                };
+            }
+        }));
+        const filteredMappings = gameTournamentMappings.filter((mapping) => mapping !== null);
+        return filteredMappings;
+    }
     async createGame(dto) {
-        console.log(dto);
         const [blackPlayer, whitePlayer, tournament] = await Promise.all([
             this.userRepo.findOneBy({ id: dto.blackPlayerId }),
             this.userRepo.findOneBy({ id: dto.whitePlayerId }),
             !dto.tournamentId ? this.tournamentRepo.findOneBy({ id: dto.tournamentId }) : null,
         ]);
-        console.log(tournament);
         if (whitePlayer && blackPlayer) {
             let game = await this.gameRepo.create({
                 ...dto,

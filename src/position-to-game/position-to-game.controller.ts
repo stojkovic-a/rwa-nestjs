@@ -10,15 +10,13 @@ export class PositionToGameController {
     }
 
     @Get(':id')
-    @Public()//
-    // @Roles(Role.Admin)
+    //@Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public getPosToGame(@Param('id', ParseIntPipe) id: number) {
         return this.posToGameService.getPosToGame(id);
     }
 
     @Post('position')
-    @Public()//
     @HttpCode(HttpStatus.OK)
     public getGameByPosition(
         @Body() params,
@@ -31,7 +29,6 @@ export class PositionToGameController {
     }
 
     @Post('positionNum')
-    @Public()//
     @HttpCode(HttpStatus.OK)
     public getNumberOfGamesByPosition(
         @Body() params,
@@ -41,15 +38,13 @@ export class PositionToGameController {
         );
     }
     @Post()
-    @Public()//
-    // @Roles(Role.Admin)
+    @Roles(Role.Admin)
     @HttpCode(HttpStatus.CREATED)
     public createPosToGame(@Body() dto: posToGameCreateionDto) {
         return this.posToGameService.createPosToGame(dto);
     }
 
     @Put(':id')
-    @Public()//
     @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public updatePosToGame(
@@ -60,7 +55,6 @@ export class PositionToGameController {
     }
 
     @Delete(':id')
-    @Public()//
     @Roles(Role.Admin)
     @HttpCode(HttpStatus.OK)
     public deletePosToGame(@Param('id', ParseIntPipe) id: number) {

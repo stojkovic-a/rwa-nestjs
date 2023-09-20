@@ -16,6 +16,7 @@ exports.GameController = void 0;
 const common_1 = require("@nestjs/common");
 const GameService_1 = require("./GameService");
 const decorator_1 = require("../auth/decorator");
+const enum_1 = require("../auth/enum");
 const models_1 = require("./models");
 let GameController = exports.GameController = class GameController {
     constructor(gameService) {
@@ -33,6 +34,9 @@ let GameController = exports.GameController = class GameController {
     getPositionsFromGame(id) {
         return this.gameService.getPositionsFromGame(id);
     }
+    getGameTournamentPagination(skip, take) {
+        return this.gameService.getGameTournamentPagination(skip, take);
+    }
     createGame(dto) {
         return this.gameService.createGame(dto);
     }
@@ -44,7 +48,6 @@ let GameController = exports.GameController = class GameController {
     }
 };
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Get)(':id'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
@@ -53,7 +56,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "getGame", null);
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Post)('/pageFilter/:skip/:take'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('skip', common_1.ParseIntPipe)),
@@ -64,7 +66,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "getGamesPaging", null);
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Get)('/number/count'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __metadata("design:type", Function),
@@ -72,7 +73,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "getNumberOfGames", null);
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Get)('/positions/:id'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
@@ -81,8 +81,17 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "getPositionsFromGame", null);
 __decorate([
+    (0, common_1.Get)('/tournamentJoin/:skip/:take'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Param)('skip', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)('take', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", void 0)
+], GameController.prototype, "getGameTournamentPagination", null);
+__decorate([
     (0, common_1.Post)(),
-    (0, decorator_1.Public)(),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -100,8 +109,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "updateGame", null);
 __decorate([
-    (0, decorator_1.Public)(),
     (0, common_1.Delete)(':id'),
+    (0, decorator_1.Roles)(enum_1.Role.Admin),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
